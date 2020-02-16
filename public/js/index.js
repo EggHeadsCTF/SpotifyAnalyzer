@@ -173,11 +173,8 @@ $(document).ready(() => {
                         let tracks = result.trackInfo.tracks;
                         let playlistInfo = result.playlistInfo;
                         let stats = result.audioFeatures.audio_features;
-
-                        console.log(stats);
                         
                         for(let i = 0; i < tracks.length; i++) {
-                            console.log(i);
                             
                             let trackTitle = tracks[i].name;
                             let trackArtist = tracks[i].artists[0].name;
@@ -187,7 +184,6 @@ $(document).ready(() => {
                             let instrumentalness = Math.round(stats[i].instrumentalness * 100) + "%";
                             let speechiness = Math.round(stats[i].speechiness * 100) + "%";
                             let tempo = Math.round(stats[i].tempo) + 'bpm';
-                            console.log(instrumentalness);
                             
                             let trackHTML = `
                                 <div class="container">

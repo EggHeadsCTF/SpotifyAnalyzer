@@ -10,12 +10,28 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 		<script src="./js/index.js"></script>
 		<link rel="stylesheet" href="./css/main.css" />
+		<script>
+function fadeIn() {
+	var element = document.getElementById("loadIn");
+    var op = 0.1;  // initial opacity
+    element.style.display = 'block';
+    var timer = setInterval(function () {
+        if (op >= 1){
+            clearInterval(timer);
+        }
+        element.style.opacity = op;
+        element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+        op += op * 0.1;
+    }, 50);
+}
+		</script>
+
 	</head>
 	<body>
 	<div id="main1"><div id="main2">
 	<section class="section">
 		<div class = "container">
-		<h1 class="title" style="font-size: 4em;">Spotify Analyzer</h1>      
+		<a href="/"><h1 class="title" style="font-size: 4em;">Spotify Analyzer</h1></a>
 		<p class="subtitle">Get statistics for different songs in Spotify</p>
 		<div class="field">
 			<div class="control">
@@ -25,14 +41,14 @@
 		</div>
 	</section>
 	<div class="container">
-		<button id="analyze" class="button is-black is-medium is-rounded" style="background-color:rgb(30,215,96);">Analyze!</button>
+		<button id="analyze" onclick=fadeIn() class="button is-black is-medium is-rounded" style="background-color:rgb(30,215,96);">Analyze!</button>
 	</div>
 	<div id="err" style="display:none;">
 
 		<h1 id="err-text" class="title" style="color: red;">[value]</h1>
 	</div>
 
-	<section class="section">	
+	<section class="section" id="loadIn">	
 		<div id="progress-bar" style="display:none;">
 			<progress class="progress is-small is-dark" max="100">loading...</progress>
 		</div>
