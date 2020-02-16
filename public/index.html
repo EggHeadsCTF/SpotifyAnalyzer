@@ -7,14 +7,16 @@
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
 		<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 		<script src="./js/index.js"></script>
 		<link rel="stylesheet" href="./css/main.css" />
 	</head>
 	<body>
+	<div id="main1"><div id="main2">
 	<section class="section">
 		<div class = "container">
 		<h1 class="title">Spotify Analyzer</h1>      
-		<p class="subtitle">Compare statistics between different songs in Spotify</p>
+		<p class="subtitle">Get statistics for different songs in Spotify</p>
 		<div class="field">
 			<div class="control">
 			<input onload="" class="input is-rounded is-medium is-info" type="text" placeholder="Input Track or Album" id="input-album">
@@ -23,9 +25,8 @@
 		</div>
 	</section>
 	<div class="container">
-		<button id="analyze" class="button is-black is-medium is-rounded">Analyze!</button>
+		<button id="analyze" class="button is-black is-medium is-rounded" style="background-color:rgb(30,215,96);">Analyze!</button>
 	</div>
-
 	<div id="err" style="display:none;">
 
 		<h1 id="err-text" class="title" style="color: red;">[value]</h1>
@@ -36,50 +37,28 @@
 			<progress class="progress is-small is-dark" max="100">loading...</progress>
 		</div>
 		<div id="statistics" style="display:none;">
-			<div class="level">
-				<div class="level-item has-text-centered">
-          			<p class="heading">Album</p>
-					<p class="title" id="album">[value]</p>
-				</div>
-				<div class="level-item has-text-centered">
-					<img src="placeholder" alt="album image" width="400" height="400" id="album-image">
+			<div class="hero is-success">
+				<div class="hero-body">
+					<div class="level">
+						<div class="level-item has-text-centered">
+							<div>
+								<b><p class="title" id="album">[value]</p></b><br>
+								<p class="subtitle" id="artist">[value]</p>
+							</div>
+							
+						</div>
+						<div class="level-item has-text-centered">
+							<img src="#" alt="album image" width="400" height="400" id="album-image" class="link">
+						</div> 
 					</div>
-				</div> 
+				</div>
 			</div>
+			<br><br>
 			<div id="stat-list">
 
 			</div>
-			<!-- <nav class="level">
-				<div class="level-item has-text-centered">
-					<p class="heading">Track</p>
-				 <p class="title" id="title">[value]</p>
-			 	</div>
-				<div class="level-item has-text-centered">
-					<p class="heading">Danceability</p>
-					<p class="title" id="danceability">[value]</p>
-				</div>
-				<div class="level-item has-text-centered">
-					<p class="heading">Energy</p>
-					<p class="title" id="energy">[value]</p>
-				</div>
-				<div class="level-item has-text-centered">
-					<p class="heading">Loudness</p>
-					<p class="title" id="loudness">[value]</p>
-				</div>
-				<div class="level-item has-text-centered">
-					<p class="heading">Instrumentalness</p>
-					<p class="title" id="instrumentalness">[value]</p>
-				</div>
-				<div class="level-item has-text-centered">
-					<p class="heading">Speechiness</p>
-					<p class="title" id="speechiness">[value]</p>
-				</div>
-				<div class="level-item has-text-centered">
-					<p class="heading">Tempo</p>
-					<p class="title" id="tempo">[value]</p>
-				</div>
-			</nav> -->
         </div>
 	</section>
+</div></div>
 	</body>
 </html>

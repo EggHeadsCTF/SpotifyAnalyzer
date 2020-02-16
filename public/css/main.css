@@ -3,19 +3,22 @@
     box-sizing: border-box;
 }
 body{
-    background-color: #1DB954;
+    background-color:#191414;
     width: 100%;
-    height: 200%;
+    height: 100%;
     left:0;
     top:0;
     position: absolute;
-    /* overflow: hidden; */
+    overflow: hidden;
     /* font-size: 14px; */
     line-height: 20px;
     letter-spacing: .015em;
     font-weight: var(--glue-font-weight-normal);
     color: #b3b3b3;
     text-transform: none;
+    animation-name: blend;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-in;
     font-family: spotify-circular,spotify-circular-cyrillic,spotify-circular-arabic,spotify-circular-hebrew,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,Meiryo,MS Gothic,sans-serif;
 }
 
@@ -32,10 +35,11 @@ form {
     color:#ffffff;
 }
 p.subtitle{
-    color:black;
+    color:white;
 }
 p.heading {
-    color:black;
+    font-size: 16px;
+    color:rgb(30,215,96);
 }
 .navBar {
     padding-top: 24px;
@@ -140,3 +144,78 @@ ul {
 .container {
     text-align: center;
 }
+table, th, td, thead, tbody {
+    border: 0px;
+    color: white;
+    background-color:rgb(30,215,96);
+}
+@-webkit-keyframes logo-in {
+    from {
+      filter: grayscale(100%) brightness(130%);
+        }
+          to {
+              filter: grayscale(0%) brightness(100%);
+          }
+      }
+
+      @-webkit-keyframes blend {
+          from {
+              filter: grayscale(100%) brightness(0%);
+          }
+          to {
+              filter: grayscale(0%) brightness(100%);
+          }
+      }
+
+  @keyframes logo-in {
+    from {
+      filter: grayscale(100%) brightness(130%);
+        }
+          to {
+              filter: grayscale(0%) brightness(100%);
+          }
+      }
+
+      @keyframes blend {
+          from {
+              filter: grayscale(100%) brightness(0%);
+          }
+          to {
+              filter: grayscale(0%) brightness(100%);
+          }
+      }
+      .link {
+        color: white;
+        opacity: .5;
+        transition: opacity 1s, text-shadow 1s;
+        animation-name: link-out;
+        animation-duration: 5s;
+        animation-timing-function: ease-in;
+          }
+      .link:hover {
+        text-shadow: 0px 0px 36px white;
+        opacity: 1;
+        color: white;
+        transition: opacity .5s, text-shadow .5s;
+          }
+
+          #main1{
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        position: relative;
+        }
+        #main2{
+            width: 100%;
+            height: 99%;
+            overflow: auto;
+            color: #b3b3b3;
+    padding-right: 17px; /* Increase/decrease this value for cross-browser compatibility */
+    box-sizing: content-box; /* So the width will be 100% + 17px */
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: -17px; /* Increase/Decrease this value for cross-browser compatibility */
+    overflow-y: scroll;
+        }

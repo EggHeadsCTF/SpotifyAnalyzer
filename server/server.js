@@ -18,7 +18,7 @@ app.post('/ajax', urlencodedParser, (req, res) => {
 	API.api(req.body.uri, (data, err) => {
 		
 		let response = err ? err : data;
-		console.log("server", response);
+		//console.log("server", response);
 		res.writeHead(200, { "Content-Type": "application/json" });
 		res.end(JSON.stringify(response));
 	});
