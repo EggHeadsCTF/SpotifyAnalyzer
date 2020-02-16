@@ -11,7 +11,8 @@ $(document).ready(() => {
     $("#analyze").click(() => {
         console.log('good')
         let query = $('#input-album').val();
-        $('#progress-bar').css('display', 'block');
+        $('#analyze').attr('class', 'button is-medium is-rounded is-loading')
+        //$('#progress-bar').css('display', 'block');
         $('#statistics').css('display', 'none');
         $('#stat-list').empty();
         $.ajax({
@@ -252,8 +253,8 @@ $(document).ready(() => {
                         $('#statistics').css('display', 'block');
                     }
 
-                    
-                    $('#progress-bar').css('display', 'none');
+                    $('#analyze').attr('class', 'button is-medium is-rounded')
+                    //$('#progress-bar').css('display', 'none');
             }
         });
     });
