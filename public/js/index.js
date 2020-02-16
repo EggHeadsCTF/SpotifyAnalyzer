@@ -22,7 +22,10 @@ $(document).ready(() => {
                 console.log(result);
                 if(result === 'invalid_url') {
                     $('#err').css('display', 'block');
-                    $('#err-text').text('Invalid URL. Please enter a valid track/album URL')
+                    $('#err-text').text('Invalid URL. Please enter a valid track/album URL');
+                } else if(result === 'api_error') {
+                    $('#err').css('display', 'block');
+                    $('#err-text').text('Error occurred. Please make sure you entered a valid track/album URL');
                 } else {
                     $('#err').css('display', 'none');
                     let info = result.trackInfo;
