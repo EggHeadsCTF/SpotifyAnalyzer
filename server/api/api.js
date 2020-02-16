@@ -1,9 +1,10 @@
 const secrets = require('../../secrets');
 const Spotify = require('spotify-web-api-node');
 const secretVars = new secrets.secrets();
-
 const DANCEABILITY_THRESHOLD = 0.5;
+//https://open.spotify.com/playlist/5aDO1Dk16b69Fx64FBAM6E?si=BlSyEbHORPir3B6X7xn05w
 
+//https://open.spotify.com/playlist/6lsUhZektNvNH6e4bv5y5S?si=Phrx8ydxQL2c5eUx2Nf0-w
 let rspData = '';
 
 // credentials are optional
@@ -16,9 +17,10 @@ redirectUri: secretVars.redirectURI
 //* Takes URI and returns object with attr id and type
 function parseInput (input) {
 	var parserSI = input.split('?')[0];
-	let result = parserSI.match(/(album|track|tracks)\/(.*)/g);
+	let result = parserSI.match(/(album|track|tracks|playlist)\/(.*)/g);
 	return /(album)/g.test(input) ? {id: result.join("").split("/")[1], type: 'album'}
 			: /(track|tracks)/g.test(input) ? {id: result.join("").split("/")[1], type: 'track'} 
+			: /(playlist)/g.test(input) ? {id: result.join("").split("/")[1], type: 'playlist'} 
 			: null;
 }
 
@@ -104,5 +106,29 @@ module.exports.api = (userInput, _callback) => {
 				});	
 			});
 		}
-	});
-};
+		
+		if(mediaURI.type === 'playlist') {
+			s.getPlaylistTracks(mediaURI.id).then(function(data) {
+				let tracks = data.body.items.map(val => val.track.id);
+				console.log(tracks);
+				
+				s.getAudioFeaturesForTracks(tracks).then(function(audioFeatures) {
+					s.getTracks(tracks).then(function(trackInfo) {
+						s.getPlaylist(mediaURI.id).then(function(info) {
+							_callback({
+								type: 'playlist',
+								playlistInfo: info.body,
+								trackInfo: trackInfo.body,
+								audioFeatures: audioFeatures.body
+							});
+						});
+					})
+					
+				}, function(err) {
+					_callback(null, 'api_error');
+					console.log('Something went wrong!', err);
+			});
+				
+			});
+		};
+	})};

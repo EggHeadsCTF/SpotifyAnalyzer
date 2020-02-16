@@ -192,6 +192,8 @@ table, th, td, thead, tbody {
         animation-name: link-out;
         animation-duration: 5s;
         animation-timing-function: ease-in;
+        -webkit-animation: mover 3s infinite  alternate;
+      animation: mover 3s infinite  alternate;
           }
       .link:hover {
         text-shadow: 0px 0px 36px white;
@@ -220,3 +222,11 @@ table, th, td, thead, tbody {
     right: -17px; /* Increase/Decrease this value for cross-browser compatibility */
     overflow-y: scroll;
         }
+        @-webkit-keyframes mover {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-25px); }
+            }
+            @keyframes mover {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-25px); }
+            }
