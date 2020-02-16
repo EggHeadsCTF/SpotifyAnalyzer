@@ -26,6 +26,7 @@
     "nodemon": "^2.0.2"
   },
   "scripts": {
+    "start": "node server/server.js",
     "test": "node server/server.js"
   },
   "repository": {
