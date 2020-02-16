@@ -249,10 +249,10 @@ $(document).ready(() => {
                             $('#album-image').attr('src', playlistInfo.images[0].url);
                         }
 
-                        
+                        $('#statistics').css('display', 'block');
                     }
 
-                    $('#statistics').css('display', 'block');
+                    
                     $('#progress-bar').css('display', 'none');
             }
         });
