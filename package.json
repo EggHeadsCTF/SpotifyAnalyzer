@@ -1,0 +1,47 @@
+{
+  "name": "spotifyanalyzer",
+  "version": "1.0.0",
+  "description": "Made for CodeDay Hackathon",
+  "main": "server/server.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "btoa": "^1.2.1",
+    "bulma": "^0.8.0",
+    "chart.js": "^2.9.3",
+    "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
+    "express": "^4.16.2",
+    "https": "^1.0.0",
+    "jsdom": "^16.1.0",
+    "moment": "^2.24.0",
+    "querystring": "^0.2.0",
+    "request": "^2.88.2",
+    "socket.io": "^2.3.0",
+    "spotify-web-api-js": "^1.2.0",
+    "spotify-web-api-node": "^4.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "expect": "^25.1.0",
+    "nodemon": "^2.0.2"
+  },
+  "scripts": {
+    "test": "node server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EggHeadsCTF/SpotifyAnalyzer.git"
+  },
+  "keywords": [
+    "Hackathon",
+    "Spotify",
+    "Analyzer",
+    "CodeDay"
+  ],
+  "author": "Sriaditya Vedantam, Daniel Pan, Arnav Patidar, Roshan Mohanty",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/EggHeadsCTF/SpotifyAnalyzer/issues"
+  },
+  "homepage": "https://github.com/EggHeadsCTF/SpotifyAnalyzer#readme"
+}
