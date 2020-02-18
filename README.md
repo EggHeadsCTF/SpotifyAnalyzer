@@ -11,4 +11,5 @@ Make sure you have a .env with following:
     ID=[spotifyID]  
     SECRET=[spotifySecret]  
     URI=[redirectURI]  
+
 Run `npm run start:dev` to load env vars
