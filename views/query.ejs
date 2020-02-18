@@ -61,22 +61,26 @@
 			</div>
 			<br><br>
 			<div id="stat-list">
-                <%  let trackInfo = response.type == 'playlist' ? response.trackInfo.tracks : response.trackInfo;
-                    let stats = response.type == 'playlist' ? response.audioFeatures.audio_features : response.audioFeatures;
-                    if(response.type == 'track') { %>
-                        <ol>
-                            <%
-                            let danceability = Math.round(stats.danceability * 100) + "%";
-                            let energy = Math.round(stats.energy * 100) + "%";
-                            let loudness = Math.round(Math.abs(-60 + Math.abs(stats.loudness))) + "dB";
-                            let instrumentalness = Math.round(stats.instrumentalness * 100) + "%";
-                            let speechiness = Math.round(stats.speechiness * 100) + "%";
-                            let tempo = Math.round(stats.tempo) + 'bpm';
-                            %>
-                            <li>
+                <%  let trackInfo = response.type == 'playlist' ? response.trackInfo.tracks : 
+                                    response.type == 'track' ? [response.trackInfo] : response.trackInfo;
+                    let stats = response.type == 'playlist' ? response.audioFeatures.audio_features : 
+                                response.type == 'track' ? [response.audioFeatures] : response.audioFeatures;
+                    %>
+                    <ol>
+                    <% for( let i = 0; i < trackInfo.length; i++ ) { %>
+                        <%
+                        let danceability = Math.round(stats[i].danceability * 100) + "%";
+                        let energy = Math.round(stats[i].energy * 100) + "%";
+                        let loudness = Math.round(Math.abs(-60 + Math.abs(stats[i].loudness))) + "dB";
+                        let instrumentalness = Math.round(stats[i].instrumentalness * 100) + "%";
+                        let speechiness = Math.round(stats[i].speechiness * 100) + "%";
+                        let tempo = Math.round(stats[i].tempo) + 'bpm';
+                        %>
+                        <li>
+                            <span>
                                 <div class="container">
-                                    <b><p class="heading" style="font-size: 1em">Track</p></b>
-                                    <b><p class="title" id="track"><%= trackInfo.name %></p></b>
+                                    <b><p class="heading" style="font-size: 1em;">Track</p></b>
+                                    <b><p class="title" id="track"><%= trackInfo[i].name %></p></b>
                                     <br><br>
 
                                     <div class="level">
@@ -89,7 +93,7 @@
                                         <div class="level-item">
                                             <div>
                                                 <b><p class="heading">Energy     </p></b><br>
-                                                <p class="title" id="track"><%= energy %>></p>
+                                                <p class="title" id="track"><%= energy %></p>
                                             </div>
                                         </div>
                                         <div class="level-item">
@@ -118,72 +122,11 @@
                                         </div>
                                     </div>
                                 </div>
-                            </li>
-                        </ol>
-                    <% } else { %>
-                        <ol>
-                        <% for( let i = 0; i < trackInfo.length; i++ ) { %>
-                            <%
-                            let danceability = Math.round(stats[i].danceability * 100) + "%";
-                            let energy = Math.round(stats[i].energy * 100) + "%";
-                            let loudness = Math.round(Math.abs(-60 + Math.abs(stats[i].loudness))) + "dB";
-                            let instrumentalness = Math.round(stats[i].instrumentalness * 100) + "%";
-                            let speechiness = Math.round(stats[i].speechiness * 100) + "%";
-                            let tempo = Math.round(stats[i].tempo) + 'bpm';
-                            %>
-                            <li>
-                                <span>
-                                    <div class="container">
-                                        <b><p class="heading" style="font-size: 1em;">Track</p></b>
-                                        <b><p class="title" id="track"><%= trackInfo[i].name %></p></b>
-                                        <br><br>
-
-                                        <div class="level">
-                                            <div class="level-item">
-                                                <div>
-                                                    <b><p class="heading">Danceability​​​     </p></b><br>
-                                                    <p class="title" id="track"><%= danceability %></p>
-                                                </div>
-                                            </div>
-                                            <div class="level-item">
-                                                <div>
-                                                    <b><p class="heading">Energy     </p></b><br>
-                                                    <p class="title" id="track"><%= energy %></p>
-                                                </div>
-                                            </div>
-                                            <div class="level-item">
-                                                <div>
-                                                    <b><p class="heading">Loudness     </p></b><br>
-                                                    <p class="title" id="track"><%= loudness %></p>
-                                                </div>
-                                            </div>
-                                            <div class="level-item">
-                                                <div>
-                                                <b><p class="heading">Instrumentalness     </p></b><br>
-                                                <p class="title" id="track"><%= instrumentalness %></p>
-                                                </div>
-                                            </div>
-                                            <div class="level-item">
-                                                <div>
-                                                <b><p class="heading">Speechiness     </p></b><br>
-                                                <p class="title" id="track"><%= speechiness %></p>
-                                                </div>
-                                            </div>
-                                            <div class="level-item">
-                                                <div>
-                                                <b><p class="heading">Tempo     </p></b><br>
-                                                <p class="title" id="track"><%= tempo %></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <br><br><br><br><br><br>
-                                </span>
-                            </li>
-                        <% } %>
-                        </ol>
-                <% } %>
-                    
+                                <br><br><br><br><br><br>
+                            </span>
+                        </li>
+                    <% } %>
+                    </ol>
                 
 			</div>
         </div>
