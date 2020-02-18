@@ -24,7 +24,7 @@ app.get('/search', (req, res) => {
 	API.api(req.query.url, (data, err) => {
 
 		let response = err ? err : data;
-		res.render('query', {response: response});
+		res.render('search', {response: response});
 	})
 });
 
