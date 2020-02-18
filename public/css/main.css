@@ -93,8 +93,20 @@ a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, bo
 ::-webkit-scrollbar-thumb {
     background-color: hsla(0,0%,100%,.3);
 }
-ol, ul {
-    list-style: none;
+ol {
+    padding-left: 3em;
+}
+ol li {
+    -webkit-column-break-inside: avoid;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    font-family: spotify-circular,spotify-circular-cyrillic,spotify-circular-arabic,spotify-circular-hebrew,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,Meiryo,MS Gothic,sans-serif;
+    color:rgb(30,215,96);
+    font-weight: bold;
+    font-size: 2em;
+}
+li span {
+    font-size: 1em;
 }
 ul {
     display: block;

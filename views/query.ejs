@@ -75,7 +75,7 @@
                             %>
                             <li>
                                 <div class="container">
-                                    <b><p class="heading" style="font-size: 1.3em">Track</p></b>
+                                    <b><p class="heading" style="font-size: 1em">Track</p></b>
                                     <b><p class="title" id="track"><%= trackInfo.name %></p></b>
                                     <br><br>
 
@@ -132,51 +132,53 @@
                             let tempo = Math.round(stats[i].tempo) + 'bpm';
                             %>
                             <li>
-                                <div class="container">
-                                    <b><p class="heading" style="font-size: 1.3em">Track</p></b>
-                                    <b><p class="title" id="track"><%= trackInfo[i].name %></p></b>
-                                    <br><br>
+                                <span>
+                                    <div class="container">
+                                        <b><p class="heading" style="font-size: 1em;">Track</p></b>
+                                        <b><p class="title" id="track"><%= trackInfo[i].name %></p></b>
+                                        <br><br>
 
-                                    <div class="level">
-                                        <div class="level-item">
-                                            <div>
-                                                <b><p class="heading">Danceability​​​     </p></b><br>
-                                                <p class="title" id="track"><%= danceability %></p>
+                                        <div class="level">
+                                            <div class="level-item">
+                                                <div>
+                                                    <b><p class="heading">Danceability​​​     </p></b><br>
+                                                    <p class="title" id="track"><%= danceability %></p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="level-item">
-                                            <div>
-                                                <b><p class="heading">Energy     </p></b><br>
-                                                <p class="title" id="track"><%= energy %></p>
+                                            <div class="level-item">
+                                                <div>
+                                                    <b><p class="heading">Energy     </p></b><br>
+                                                    <p class="title" id="track"><%= energy %></p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="level-item">
-                                            <div>
-                                                <b><p class="heading">Loudness     </p></b><br>
-                                                <p class="title" id="track"><%= loudness %></p>
+                                            <div class="level-item">
+                                                <div>
+                                                    <b><p class="heading">Loudness     </p></b><br>
+                                                    <p class="title" id="track"><%= loudness %></p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="level-item">
-                                            <div>
-                                            <b><p class="heading">Instrumentalness     </p></b><br>
-                                            <p class="title" id="track"><%= instrumentalness %></p>
+                                            <div class="level-item">
+                                                <div>
+                                                <b><p class="heading">Instrumentalness     </p></b><br>
+                                                <p class="title" id="track"><%= instrumentalness %></p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="level-item">
-                                            <div>
-                                            <b><p class="heading">Speechiness     </p></b><br>
-                                            <p class="title" id="track"><%= speechiness %></p>
+                                            <div class="level-item">
+                                                <div>
+                                                <b><p class="heading">Speechiness     </p></b><br>
+                                                <p class="title" id="track"><%= speechiness %></p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="level-item">
-                                            <div>
-                                            <b><p class="heading">Tempo     </p></b><br>
-                                            <p class="title" id="track"><%= tempo %></p>
+                                            <div class="level-item">
+                                                <div>
+                                                <b><p class="heading">Tempo     </p></b><br>
+                                                <p class="title" id="track"><%= tempo %></p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <br><br><br><br><br><br>
+                                    <br><br><br><br><br><br>
+                                </span>
                             </li>
                         <% } %>
                         </ol>
