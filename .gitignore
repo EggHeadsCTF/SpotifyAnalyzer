@@ -1,5 +1,4 @@
 /node_modules
-/secrets.js
+secrets.js
 /.vscode
-/out.txt
 /playground
