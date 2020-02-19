@@ -8,7 +8,7 @@
 		<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-		<script src="/js/index.js" type="text/javascript"></script>
+		<script src="/js/search.js" type="text/javascript"></script>
 		<link rel="stylesheet" href="/css/main.css" />
     </head>
     
@@ -81,13 +81,31 @@
                     let stats = response.type == 'playlist' ? response.audioFeatures.audio_features : 
                                 response.type == 'track' ? [response.audioFeatures] : response.audioFeatures;
                     %>
-                    <div class="container">
-                        <canvas id="danceability-chart"></canvas>
-                        <canvas id="energy-chart"></canvas>
-                        <canvas id="loudness-chart"></canvas>
-                        <canvas id="instrumentalness-chart"></canvas>
-                        <canvas id="speechiness-chart"></canvas>
-                        <canvas id="tempo-chart"></canvas>
+                    <div class="dropdown">
+                        <div class="dropdown-trigger">
+                            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                                <span id="dropdown-text">--Select Graph for Analysis--</span>
+                                <span class="icon is-small">
+                                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                </span>
+                            </button>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                            <div class="dropdown-content">
+                                <a class="dropdown-item" id="reset-dropdown">--Select Graph for Analysis--</a>
+                                <a class="dropdown-item" id="danceability-dropdown">Danceability</a>
+                                <a class="dropdown-item" id="energy-dropdown">Energy</a>
+                                <a class="dropdown-item" id="loudness-dropdown">Loudness</a>
+                                <a class="dropdown-item" id="instrumentalness-dropdown">Instrumentness</a>
+                                <a class="dropdown-item" id="speechiness-dropdown">Speechiness</a>
+                                <a class="dropdown-item" id="tempo-dropdown">Tempo</a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="container" id="graph-container">
+                        <canvas id="stat-chart"></canvas>
                     </div>
                     <ol>
                     <% for( let i = 0; i < trackInfo.length; i++ ) { %>
@@ -111,37 +129,37 @@
                                         <div class="level-item">
                                             <div>
                                                 <b><p class="heading">Danceability​​​     </p></b><br>
-                                                <p class="title" id="track"><%= danceability %></p>
+                                                <p class="title"]><%= danceability %></p>
                                             </div>
                                         </div>
                                         <div class="level-item">
                                             <div>
                                                 <b><p class="heading">Energy     </p></b><br>
-                                                <p class="title" id="track"><%= energy %></p>
+                                                <p class="title"><%= energy %></p>
                                             </div>
                                         </div>
                                         <div class="level-item">
                                             <div>
                                                 <b><p class="heading">Loudness     </p></b><br>
-                                                <p class="title" id="track"><%= loudness %></p>
+                                                <p class="title"<%= loudness %></p>
                                             </div>
                                         </div>
                                         <div class="level-item">
                                             <div>
-                                            <b><p class="heading">Instrumentalness     </p></b><br>
-                                            <p class="title" id="track"><%= instrumentalness %></p>
+                                                <b><p class="heading">Instrumentalness     </p></b><br>
+                                                <p class="title"><%= instrumentalness %></p>
                                             </div>
                                         </div>
                                         <div class="level-item">
                                             <div>
-                                            <b><p class="heading">Speechiness     </p></b><br>
-                                            <p class="title" id="track"><%= speechiness %></p>
+                                                <b><p class="heading">Speechiness     </p></b><br>
+                                                <p class="title"><%= speechiness %></p>
                                             </div>
                                         </div>
                                         <div class="level-item">
                                             <div>
-                                            <b><p class="heading">Tempo     </p></b><br>
-                                            <p class="title" id="track"><%= tempo %></p>
+                                                <b><p class="heading">Tempo     </p></b><br>
+                                                <p class="title"><%= tempo %></p>
                                             </div>
                                         </div>
                                     </div>
@@ -159,15 +177,19 @@
     </body>
     
     <script>
-        let danceabilityChartElement = document.getElementById('danceability-chart').getContext('2d');
-        let energyChartElement = document.getElementById('energy-chart').getContext('2d');
-        let loudnessChartElement = document.getElementById('loudness-chart').getContext('2d');
-        let instrumentalnessChartElement = document.getElementById('instrumentalness-chart').getContext('2d');
-        let speechinessChartElement = document.getElementById('speechiness-chart').getContext('2d');
-        let tempoChartElement = document.getElementById('tempo-chart').getContext('2d');
         
+        function setElements(name) {
+            $('#stat-chart').remove();
+            $('#graph-container').append('<canvas id="stat-chart"></canvas>');
+            statChartElement = document.getElementById('stat-chart').getContext('2d');
+            $('#dropdown-text').text(name);
+        }
+
+        let statChartElement = document.getElementById('stat-chart').getContext('2d');
+
         tracks = JSON.parse(`<%- JSON.stringify(trackInfo) %>`);
         stats = JSON.parse(`<%- JSON.stringify(stats) %>`);
+
         options = {
             legend: {
                 display: true,
@@ -178,77 +200,101 @@
             }
         };
 
-        let danceabilityChart = new Chart(danceabilityChartElement, {
-            type: 'bar',
-            data: {
-                labels: tracks.map(val => val.name),
-                datasets: [{
-                    label: 'Danceability',
-                    data: stats.map(val => val.danceability),
-                    backgroundColor: 'rgb(30,215,96)'
-                }]
-            },
-            options: options
+        $("#reset-dropdown").click(() => {
+            setElements("--Select Graph for Analysis--");
         });
-        let energyChart = new Chart(energyChartElement, {
-            type: 'bar',
-            data: {
-                labels: tracks.map(val => val.name),
-                datasets: [{
-                    label: 'Energy',
-                    data: stats.map(val => val.energy),
-                    backgroundColor: 'rgb(30,215,96)'
-                }]
-            },
-            options: options
+
+        $("#danceability-dropdown").click(() => {
+            setElements("Danceability");
+            let danceabilityChart = new Chart(statChartElement, {
+                type: 'bar',
+                data: {
+                    labels: tracks.map(val => val.name),
+                    datasets: [{
+                        label: 'Danceability',
+                        data: stats.map(val => val.danceability),
+                        backgroundColor: 'rgb(30,215,96)'
+                    }]
+                },
+                options: options
+            });
         });
-        let loudnessChart = new Chart(loudnessChartElement, {
-            type: 'bar',
-            data: {
-                labels: tracks.map(val => val.name),
-                datasets: [{
-                    label: 'Loudness',
-                    data: stats.map(val => Math.abs(-60 + Math.abs(val.loudness))),
-                    backgroundColor: 'rgb(30,215,96)'
-                }]
-            },
-            options: options
+        $("#energy-dropdown").click(() => {
+            setElements("Energy");
+            let energyChart = new Chart(statChartElement, {
+                type: 'bar',
+                data: {
+                    labels: tracks.map(val => val.name),
+                    datasets: [{
+                        label: 'Energy',
+                        data: stats.map(val => val.energy),
+                        backgroundColor: 'rgb(30,215,96)'
+                    }]
+                },
+                options: options
+            });
         });
-        let instrumentalnessChart = new Chart(instrumentalnessChartElement, {
-            type: 'bar',
-            data: {
-                labels: tracks.map(val => val.name),
-                datasets: [{
-                    label: 'Instrumentalness',
-                    data: stats.map(val => val.instrumentalness),
-                    backgroundColor: 'rgb(30,215,96)'
-                }]
-            },
-            options: options
+        $("#loudness-dropdown").click(() => {     
+            setElements("Loudness"); 
+            let loudnessChart = new Chart(statChartElement, {
+                type: 'bar',
+                data: {
+                    labels: tracks.map(val => val.name),
+                    datasets: [{
+                        label: 'Loudness',
+                        data: stats.map(val => Math.abs(-60 + Math.abs(val.loudness))),
+                        backgroundColor: 'rgb(30,215,96)'
+                    }]
+                },
+                options: options
+            });
         });
-        let speechinessChart = new Chart(speechinessChartElement, {
-            type: 'bar',
-            data: {
-                labels: tracks.map(val => val.name),
-                datasets: [{
-                    label: 'Speechiness',
-                    data: stats.map(val => val.speechiness),
-                    backgroundColor: 'rgb(30,215,96)'
-                }]
-            },
-            options: options
+        $("#instrumentalness-dropdown").click(() => { 
+            setElements("Instrumentalness");
+            let instrumentalnessChart = new Chart(statChartElement, {
+                type: 'bar',
+                data: {
+                    labels: tracks.map(val => val.name),
+                    datasets: [{
+                        label: 'Instrumentalness',
+                        data: stats.map(val => val.instrumentalness),
+                        backgroundColor: 'rgb(30,215,96)'
+                    }]
+                },
+                options: options
+            });
         });
-        let tempoChart = new Chart(tempoChartElement, {
-            type: 'bar',
-            data: {
-                labels: tracks.map(val => val.name),
-                datasets: [{
-                    label: 'Tempo',
-                    data: stats.map(val => val.tempo),
-                    backgroundColor: 'rgb(30,215,96)'
-                }]
-            },
-            options: options
+        $("#speechiness-dropdown").click(() => {
+            setElements("Speechiness");
+            let speechinessChart = new Chart(statChartElement, {
+                type: 'bar',
+                data: {
+                    labels: tracks.map(val => val.name),
+                    datasets: [{
+                        label: 'Speechiness',
+                        data: stats.map(val => val.speechiness),
+                        backgroundColor: 'rgb(30,215,96)'
+                    }]
+                },
+                options: options
+            });
         });
+        $("#tempo-dropdown").click(() => {
+            setElements("Tempo");
+            let tempoChart = new Chart(statChartElement, {
+                type: 'bar',
+                data: {
+                    labels: tracks.map(val => val.name),
+                    datasets: [{
+                        label: 'Tempo',
+                        data: stats.map(val => val.tempo),
+                        backgroundColor: 'rgb(30,215,96)'
+                    }]
+                },
+                options: options
+            });
+        });
+        
+        
     </script>
 </html>
