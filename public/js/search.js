@@ -25,4 +25,6 @@ $(document).ready(() => {
     $('#analyze').click(() => {
         $('#analyze').attr('class', 'button is-medium is-rounded is-loading')
     });
+
+    
 });

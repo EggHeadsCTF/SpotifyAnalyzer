@@ -81,6 +81,14 @@
                     let stats = response.type == 'playlist' ? response.audioFeatures.audio_features : 
                                 response.type == 'track' ? [response.audioFeatures] : response.audioFeatures;
                     %>
+                    <div class="container">
+                        <canvas id="danceability-chart"></canvas>
+                        <canvas id="energy-chart"></canvas>
+                        <canvas id="loudness-chart"></canvas>
+                        <canvas id="instrumentalness-chart"></canvas>
+                        <canvas id="speechiness-chart"></canvas>
+                        <canvas id="tempo-chart"></canvas>
+                    </div>
                     <ol>
                     <% for( let i = 0; i < trackInfo.length; i++ ) { %>
                         <%
@@ -146,7 +154,101 @@
                 
 			</div>
         </div>
-	</section>
+    </section>
 </div></div>
-	</body>
+    </body>
+    
+    <script>
+        let danceabilityChartElement = document.getElementById('danceability-chart').getContext('2d');
+        let energyChartElement = document.getElementById('energy-chart').getContext('2d');
+        let loudnessChartElement = document.getElementById('loudness-chart').getContext('2d');
+        let instrumentalnessChartElement = document.getElementById('instrumentalness-chart').getContext('2d');
+        let speechinessChartElement = document.getElementById('speechiness-chart').getContext('2d');
+        let tempoChartElement = document.getElementById('tempo-chart').getContext('2d');
+        
+        tracks = JSON.parse(`<%- JSON.stringify(trackInfo) %>`);
+        stats = JSON.parse(`<%- JSON.stringify(stats) %>`);
+        options = {
+            legend: {
+                display: true,
+                labels: {
+                    fontColor: 'rgb(255, 255, 255)',
+                    fontFamily: 'spotify-circular,spotify-circular-cyrillic,spotify-circular-arabic,spotify-circular-hebrew,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,Meiryo,MS Gothic,sans-serif'
+                }
+            }
+        };
+
+        let danceabilityChart = new Chart(danceabilityChartElement, {
+            type: 'bar',
+            data: {
+                labels: tracks.map(val => val.name),
+                datasets: [{
+                    label: 'Danceability',
+                    data: stats.map(val => val.danceability),
+                    backgroundColor: 'rgb(30,215,96)'
+                }]
+            },
+            options: options
+        });
+        let energyChart = new Chart(energyChartElement, {
+            type: 'bar',
+            data: {
+                labels: tracks.map(val => val.name),
+                datasets: [{
+                    label: 'Energy',
+                    data: stats.map(val => val.energy),
+                    backgroundColor: 'rgb(30,215,96)'
+                }]
+            },
+            options: options
+        });
+        let loudnessChart = new Chart(loudnessChartElement, {
+            type: 'bar',
+            data: {
+                labels: tracks.map(val => val.name),
+                datasets: [{
+                    label: 'Loudness',
+                    data: stats.map(val => Math.abs(-60 + Math.abs(val.loudness))),
+                    backgroundColor: 'rgb(30,215,96)'
+                }]
+            },
+            options: options
+        });
+        let instrumentalnessChart = new Chart(instrumentalnessChartElement, {
+            type: 'bar',
+            data: {
+                labels: tracks.map(val => val.name),
+                datasets: [{
+                    label: 'Instrumentalness',
+                    data: stats.map(val => val.instrumentalness),
+                    backgroundColor: 'rgb(30,215,96)'
+                }]
+            },
+            options: options
+        });
+        let speechinessChart = new Chart(speechinessChartElement, {
+            type: 'bar',
+            data: {
+                labels: tracks.map(val => val.name),
+                datasets: [{
+                    label: 'Speechiness',
+                    data: stats.map(val => val.speechiness),
+                    backgroundColor: 'rgb(30,215,96)'
+                }]
+            },
+            options: options
+        });
+        let tempoChart = new Chart(tempoChartElement, {
+            type: 'bar',
+            data: {
+                labels: tracks.map(val => val.name),
+                datasets: [{
+                    label: 'Tempo',
+                    data: stats.map(val => val.tempo),
+                    backgroundColor: 'rgb(30,215,96)'
+                }]
+            },
+            options: options
+        });
+    </script>
 </html>
