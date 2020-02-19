@@ -14,11 +14,16 @@
     
     <nav class="navbar" style="background-color:#191414; margin-top: 0.7em;">
         <div class="navbar-brand">
-            <div class="navbar-item" style="padding-right: 5em;">
+            <div class="navbar-item" style="padding-right: 4.5em;">
                 <a href="/"><h1 class="title" style="font-size: 3em; color: rgb(30,215,96);">Spotify Analyzer</h1></a>
             </div>
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="search">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
         </div>
-        <div class="navbar-menu">
+        <div id="search" class="navbar-menu">
                 <form action="/search" method="get">
                     <div class="field has-addons" style="display: table; width: 80em;">
                         <div class="control" style="display: table-cell;">

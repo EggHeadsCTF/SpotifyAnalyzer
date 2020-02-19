@@ -1,5 +1,13 @@
 $(document).ready(() => {
 
+    $(".navbar-burger").click(function() {
+
+        // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+        $(".navbar-burger").toggleClass("is-active");
+        $(".navbar-menu").toggleClass("is-active");
+
+    });
+
     function fadeIn() {
         var element = document.getElementById("loadIn");
         var op = 0.1;  // initial opacity
