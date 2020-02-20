@@ -1,7 +1,6 @@
 const secrets = require('../../secrets');
 const Spotify = require('spotify-web-api-node');
 const secretVars = new secrets.secrets();
-const DANCEABILITY_THRESHOLD = 0.5;
 //https://open.spotify.com/playlist/5aDO1Dk16b69Fx64FBAM6E?si=BlSyEbHORPir3B6X7xn05w
 
 //https://open.spotify.com/playlist/6lsUhZektNvNH6e4bv5y5S?si=Phrx8ydxQL2c5eUx2Nf0-w

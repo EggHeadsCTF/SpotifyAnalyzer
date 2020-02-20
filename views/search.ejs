@@ -27,7 +27,7 @@
                 <form action="/search" method="get">
                     <div class="field has-addons" style="display: table; width: 80em;">
                         <div class="control" style="display: table-cell;">
-                            <input onload="" name = 'url' class="input is-rounded is-medium is-info" type="text" placeholder="Input Track, Album, or Playlist" id="input-album" style="display: inline-block;">
+                            <input onload="" name = 'url' class="input is-rounded is-medium is-info"title="Must be a valid spotify album, track, or playlist url" type="url" pattern=".*(album|track|tracks|playlist)\/(.*){1}" placeholder="Input Track, Album, or Playlist" id="input-album" required style="display: inline-block;">
                         </div>
                         <div class="control" style="display: table-cell;">
                             <button id="analyze" type="submit" class="button is-medium is-rounded" style="background-color:rgb(30,215,96); border: none; padding-top: 10px;">Analyze!</button>
@@ -141,7 +141,7 @@
                                         <div class="level-item">
                                             <div>
                                                 <b><p class="heading">Loudness     </p></b><br>
-                                                <p class="title"<%= loudness %></p>
+                                                <p class="title"><%= loudness %></p>
                                             </div>
                                         </div>
                                         <div class="level-item">
@@ -210,10 +210,10 @@
             
         }
 
-
-
         let statChartElement = document.getElementById('stat-chart').getContext('2d');
 
+
+        //TODO Fix for larger datasets
         tracks = JSON.parse(`<%- JSON.stringify(trackInfo) %>`);
         stats = JSON.parse(`<%- JSON.stringify(stats) %>`);
 
@@ -273,20 +273,6 @@
         $("#tempo-dropdown").click(() => {
             setElements("Tempo");
             updateGraph('Tempo', tracks.map(val => val.name), stats.map(val => val.tempo));
-            /* let tempoChart = new Chart(statChartElement, {
-                type: 'bar',
-                data: {
-                    labels: tracks.map(val => val.name),
-                    datasets: [{
-                        label: 'Tempo',
-                        data: stats.map(val => val.tempo),
-                        backgroundColor: 'rgb(30,215,96)'
-                    }]
-                },
-                options: options
-            }); */
         });
-        
-        
     </script>
 </html>

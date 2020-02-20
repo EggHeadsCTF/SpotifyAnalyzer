@@ -25,10 +25,9 @@ $(document).ready(() => {
             op += op * 0.1;
         }, 50);
     }
-
     $('#analyze').click(() => {
-        $('#analyze').attr('class', 'button is-medium is-rounded is-loading')
+        if(!$('#input-album input:invalid')) {
+            $('#analyze').addClass('is-loading');
+        }
     });
-
-    
 });
