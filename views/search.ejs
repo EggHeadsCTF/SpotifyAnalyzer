@@ -30,7 +30,7 @@
                             <input onload="" name = 'url' class="input is-rounded is-medium is-info" type="text" placeholder="Input Track, Album, or Playlist" id="input-album" style="display: inline-block;">
                         </div>
                         <div class="control" style="display: table-cell;">
-                            <button id="analyze" type="submit" onclick=fadeIn() class="button is-medium is-rounded" style="background-color:rgb(30,215,96); border: none; padding-top: 10px;">Analyze!</button>
+                            <button id="analyze" type="submit" class="button is-medium is-rounded" style="background-color:rgb(30,215,96); border: none; padding-top: 10px;">Analyze!</button>
                         </div>
                     </div>                  
                 </form>
@@ -179,11 +179,38 @@
     <script>
         
         function setElements(name) {
-            $('#stat-chart').remove();
-            $('#graph-container').append('<canvas id="stat-chart"></canvas>');
-            statChartElement = document.getElementById('stat-chart').getContext('2d');
             $('#dropdown-text').text(name);
+            $("#stat-chart").show();
         }
+
+
+        function removeChartData(chart) {
+            chart.data.labels.pop();
+            chart.data.datasets.pop();
+            chart.update();
+        }
+
+        function addChartData(chart, label, nameArr, dataArr) {
+            chart.data.labels = nameArr;
+
+            chart.data.datasets.push({
+                label: label,
+                data: dataArr,
+                backgroundColor: 'rgb(30,215,96)'
+            });
+            
+            chart.update();
+        }
+
+        function updateGraph(label, nameArr, dataArr) {
+            removeChartData(statChart);
+            addChartData(statChart, label, nameArr, dataArr);
+            statChart.update();
+            console.log(statChart);
+            
+        }
+
+
 
         let statChartElement = document.getElementById('stat-chart').getContext('2d');
 
@@ -197,91 +224,56 @@
                     fontColor: 'rgb(255, 255, 255)',
                     fontFamily: 'spotify-circular,spotify-circular-cyrillic,spotify-circular-arabic,spotify-circular-hebrew,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,Meiryo,MS Gothic,sans-serif'
                 }
+            },
+            datasets: {
+                backgroundColor: 'rgb(30,215,96)'
             }
         };
 
         $("#reset-dropdown").click(() => {
             setElements("--Select Graph for Analysis--");
+            $("#stat-chart").hide();
         });
+
+        let statChart = new Chart(statChartElement, {
+                type: 'bar',
+                data: {
+                    labels: ["[value]"],
+                    datasets: [
+                        {
+                            data: ['value']
+                        }
+                    ]
+                },
+                options: options
+        });
+
+        $("#stat-chart").hide();
 
         $("#danceability-dropdown").click(() => {
             setElements("Danceability");
-            let danceabilityChart = new Chart(statChartElement, {
-                type: 'bar',
-                data: {
-                    labels: tracks.map(val => val.name),
-                    datasets: [{
-                        label: 'Danceability',
-                        data: stats.map(val => val.danceability),
-                        backgroundColor: 'rgb(30,215,96)'
-                    }]
-                },
-                options: options
-            });
+            updateGraph('Danceability', tracks.map(val => val.name), stats.map(val => val.danceability));
         });
         $("#energy-dropdown").click(() => {
             setElements("Energy");
-            let energyChart = new Chart(statChartElement, {
-                type: 'bar',
-                data: {
-                    labels: tracks.map(val => val.name),
-                    datasets: [{
-                        label: 'Energy',
-                        data: stats.map(val => val.energy),
-                        backgroundColor: 'rgb(30,215,96)'
-                    }]
-                },
-                options: options
-            });
+            updateGraph('Energy', tracks.map(val => val.name), stats.map(val => val.energy));
         });
         $("#loudness-dropdown").click(() => {     
             setElements("Loudness"); 
-            let loudnessChart = new Chart(statChartElement, {
-                type: 'bar',
-                data: {
-                    labels: tracks.map(val => val.name),
-                    datasets: [{
-                        label: 'Loudness',
-                        data: stats.map(val => Math.abs(-60 + Math.abs(val.loudness))),
-                        backgroundColor: 'rgb(30,215,96)'
-                    }]
-                },
-                options: options
-            });
+            updateGraph('Loudness', tracks.map(val => val.name), stats.map(val => Math.abs(-60 + Math.abs(val.loudness))));
         });
         $("#instrumentalness-dropdown").click(() => { 
             setElements("Instrumentalness");
-            let instrumentalnessChart = new Chart(statChartElement, {
-                type: 'bar',
-                data: {
-                    labels: tracks.map(val => val.name),
-                    datasets: [{
-                        label: 'Instrumentalness',
-                        data: stats.map(val => val.instrumentalness),
-                        backgroundColor: 'rgb(30,215,96)'
-                    }]
-                },
-                options: options
-            });
+            updateGraph('Instrumentalness', tracks.map(val => val.name), stats.map(val => val.instrumentalness));
         });
         $("#speechiness-dropdown").click(() => {
             setElements("Speechiness");
-            let speechinessChart = new Chart(statChartElement, {
-                type: 'bar',
-                data: {
-                    labels: tracks.map(val => val.name),
-                    datasets: [{
-                        label: 'Speechiness',
-                        data: stats.map(val => val.speechiness),
-                        backgroundColor: 'rgb(30,215,96)'
-                    }]
-                },
-                options: options
-            });
+            updateGraph('Speechiness', tracks.map(val => val.name), stats.map(val => val.speechiness));
         });
         $("#tempo-dropdown").click(() => {
             setElements("Tempo");
-            let tempoChart = new Chart(statChartElement, {
+            updateGraph('Tempo', tracks.map(val => val.name), stats.map(val => val.tempo));
+            /* let tempoChart = new Chart(statChartElement, {
                 type: 'bar',
                 data: {
                     labels: tracks.map(val => val.name),
@@ -292,7 +284,7 @@
                     }]
                 },
                 options: options
-            });
+            }); */
         });
         
         
