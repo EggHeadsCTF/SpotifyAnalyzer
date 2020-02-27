@@ -1,7 +1,7 @@
-# spotify-analyzer
+# SpotifyAnalyzer
 Get statistics from Spotify Tracks and Albums  
 
-Using Spotify API, grab attributes of tracks including danceability, energy, instrumentalism, etc. and create visuals/sort.
+Using Spotify API, grab attributes of tracks including danceability, energy, instrumentalism, etc. and create visualizations/sorting.
 
 Live version running at https://spotifyanalyzer-dp.herokuapp.com/
 
