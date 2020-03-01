@@ -8,7 +8,7 @@
 		<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-		<script src="/js/index.js" type="text/javascript"></script>
+		<script src="/js/search.js" type="text/javascript"></script>
 		<link rel="stylesheet" href="/css/main.css" />
     </head>
     
@@ -27,10 +27,10 @@
                 <form action="/search" method="get">
                     <div class="field has-addons" style="display: table; width: 80em;">
                         <div class="control" style="display: table-cell;">
-                            <input onload="" name = 'url' class="input is-rounded is-medium is-info" type="text" placeholder="Input Track, Album, or Playlist" id="input-album" style="display: inline-block;">
+                            <input onload="" name = 'url' class="input is-rounded is-medium is-info"title="Must be a valid spotify album, track, or playlist url" type="url" pattern=".*(album|track|tracks|playlist)\/(.*){1}" placeholder="Input Track, Album, or Playlist" id="input-album" required style="display: inline-block;">
                         </div>
                         <div class="control" style="display: table-cell;">
-                            <button id="analyze" type="submit" onclick=fadeIn() class="button is-medium is-rounded" style="background-color:rgb(30,215,96); border: none; padding-top: 10px;">Analyze!</button>
+                            <button id="analyze" type="submit" class="button is-medium is-rounded" style="background-color:rgb(30,215,96); border: none; padding-top: 10px;">Analyze!</button>
                         </div>
                     </div>                  
                 </form>
@@ -81,6 +81,31 @@
                     let stats = response.type == 'playlist' ? response.audioFeatures.audio_features : 
                                 response.type == 'track' ? [response.audioFeatures] : response.audioFeatures;
                     %>
+                    <div class="dropdown">
+                        <div class="dropdown-trigger">
+                            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                                <span id="dropdown-text">--Select Graph for Analysis--</span>
+                                <span class="icon is-small">
+                                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                </span>
+                            </button>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                            <div class="dropdown-content">
+                                <a class="dropdown-item" id="reset-dropdown">--Select Graph for Analysis--</a>
+                                <a class="dropdown-item" id="danceability-dropdown">Danceability</a>
+                                <a class="dropdown-item" id="energy-dropdown">Energy</a>
+                                <a class="dropdown-item" id="loudness-dropdown">Loudness</a>
+                                <a class="dropdown-item" id="instrumentalness-dropdown">Instrumentness</a>
+                                <a class="dropdown-item" id="speechiness-dropdown">Speechiness</a>
+                                <a class="dropdown-item" id="tempo-dropdown">Tempo</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container" id="graph-container">
+                        <canvas id="stat-chart"></canvas>
+                    </div>
+
                     <ol>
                     <% for( let i = 0; i < trackInfo.length; i++ ) { %>
                         <%
@@ -103,37 +128,37 @@
                                         <div class="level-item">
                                             <div>
                                                 <b><p class="heading">Danceability​​​     </p></b><br>
-                                                <p class="title" id="track"><%= danceability %></p>
+                                                <p class="title"]><%= danceability %></p>
                                             </div>
                                         </div>
                                         <div class="level-item">
                                             <div>
                                                 <b><p class="heading">Energy     </p></b><br>
-                                                <p class="title" id="track"><%= energy %></p>
+                                                <p class="title"><%= energy %></p>
                                             </div>
                                         </div>
                                         <div class="level-item">
                                             <div>
                                                 <b><p class="heading">Loudness     </p></b><br>
-                                                <p class="title" id="track"><%= loudness %></p>
+                                                <p class="title"><%= loudness %></p>
                                             </div>
                                         </div>
                                         <div class="level-item">
                                             <div>
-                                            <b><p class="heading">Instrumentalness     </p></b><br>
-                                            <p class="title" id="track"><%= instrumentalness %></p>
+                                                <b><p class="heading">Instrumentalness     </p></b><br>
+                                                <p class="title"><%= instrumentalness %></p>
                                             </div>
                                         </div>
                                         <div class="level-item">
                                             <div>
-                                            <b><p class="heading">Speechiness     </p></b><br>
-                                            <p class="title" id="track"><%= speechiness %></p>
+                                                <b><p class="heading">Speechiness     </p></b><br>
+                                                <p class="title"><%= speechiness %></p>
                                             </div>
                                         </div>
                                         <div class="level-item">
                                             <div>
-                                            <b><p class="heading">Tempo     </p></b><br>
-                                            <p class="title" id="track"><%= tempo %></p>
+                                                <b><p class="heading">Tempo     </p></b><br>
+                                                <p class="title"><%= tempo %></p>
                                             </div>
                                         </div>
                                     </div>
@@ -146,7 +171,111 @@
                 
 			</div>
         </div>
-	</section>
-</div></div>
-	</body>
+    </section>
+    <span id="trackInfo" hidden><%= JSON.stringify(trackInfo) %></span>
+    <span id="stats" hidden><%= JSON.stringify(stats) %></span>
+    </body>
+    
+    <script>
+        
+        function setElements(name) {
+            $('#dropdown-text').text(name);
+            $("#stat-chart").show();
+        }
+
+
+        function removeChartData(chart) {
+            chart.data.labels.pop();
+            chart.data.datasets.pop();
+            chart.update();
+        }
+
+        function addChartData(chart, label, nameArr, dataArr) {
+            chart.data.labels = nameArr;
+
+            chart.data.datasets.push({
+                label: label,
+                data: dataArr,
+                backgroundColor: 'rgb(30,215,96)'
+            });
+            
+            chart.update();
+        }
+
+        function updateGraph(label, nameArr, dataArr) {
+            removeChartData(statChart);
+            addChartData(statChart, label, nameArr, dataArr);
+            statChart.update();
+            console.log(statChart);
+            
+        }
+
+        let statChartElement = document.getElementById('stat-chart').getContext('2d');
+
+
+        //TODO Fix for larger datasets
+        tracks = JSON.parse(document.getElementById("trackInfo").textContent);
+        stats = JSON.parse(document.getElementById("stats").textContent);
+        console.log(JSON.stringify(tracks));
+        console.log(JSON.stringify(stats));
+        
+
+        options = {
+            legend: {
+                display: true,
+                labels: {
+                    fontColor: 'rgb(255, 255, 255)',
+                    fontFamily: 'spotify-circular,spotify-circular-cyrillic,spotify-circular-arabic,spotify-circular-hebrew,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,Meiryo,MS Gothic,sans-serif'
+                }
+            },
+            datasets: {
+                backgroundColor: 'rgb(30,215,96)'
+            }
+        };
+
+        $("#reset-dropdown").click(() => {
+            setElements("--Select Graph for Analysis--");
+            $("#stat-chart").hide();
+        });
+
+        let statChart = new Chart(statChartElement, {
+                type: 'bar',
+                data: {
+                    labels: ["[value]"],
+                    datasets: [
+                        {
+                            data: ['value']
+                        }
+                    ]
+                },
+                options: options
+        });
+
+        $("#stat-chart").hide();
+
+        $("#danceability-dropdown").click(() => {
+            setElements("Danceability");
+            updateGraph('Danceability', tracks.map(val => val.name), stats.map(val => val.danceability));
+        });
+        $("#energy-dropdown").click(() => {
+            setElements("Energy");
+            updateGraph('Energy', tracks.map(val => val.name), stats.map(val => val.energy));
+        });
+        $("#loudness-dropdown").click(() => {     
+            setElements("Loudness"); 
+            updateGraph('Loudness', tracks.map(val => val.name), stats.map(val => Math.abs(-60 + Math.abs(val.loudness))));
+        });
+        $("#instrumentalness-dropdown").click(() => { 
+            setElements("Instrumentalness");
+            updateGraph('Instrumentalness', tracks.map(val => val.name), stats.map(val => val.instrumentalness));
+        });
+        $("#speechiness-dropdown").click(() => {
+            setElements("Speechiness");
+            updateGraph('Speechiness', tracks.map(val => val.name), stats.map(val => val.speechiness));
+        });
+        $("#tempo-dropdown").click(() => {
+            setElements("Tempo");
+            updateGraph('Tempo', tracks.map(val => val.name), stats.map(val => val.tempo));
+        });
+    </script>
 </html>

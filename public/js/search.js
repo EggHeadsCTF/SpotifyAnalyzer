@@ -1,12 +1,16 @@
 $(document).ready(() => {
 
-    $(".navbar-burger").click(function() {
+    $(".navbar-burger").click(() => {
 
         // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
         $(".navbar-burger").toggleClass("is-active");
         $(".navbar-menu").toggleClass("is-active");
 
     });
+
+    $(".dropdown").click(() => {
+        $(".dropdown").toggleClass("is-active");
+    })
 
     function fadeIn() {
         var element = document.getElementById("loadIn");
@@ -21,8 +25,9 @@ $(document).ready(() => {
             op += op * 0.1;
         }, 50);
     }
-
     $('#analyze').click(() => {
-        $('#analyze').attr('class', 'button is-medium is-rounded is-loading')
+        if(!$('#input-album input:invalid')) {
+            $('#analyze').addClass('is-loading');
+        }
     });
 });
