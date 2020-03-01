@@ -102,11 +102,10 @@
                             </div>
                         </div>
                     </div>
-
-
                     <div class="container" id="graph-container">
                         <canvas id="stat-chart"></canvas>
                     </div>
+
                     <ol>
                     <% for( let i = 0; i < trackInfo.length; i++ ) { %>
                         <%
@@ -173,7 +172,8 @@
 			</div>
         </div>
     </section>
-</div></div>
+    <span id="trackInfo" hidden><%= JSON.stringify(trackInfo) %></span>
+    <span id="stats" hidden><%= JSON.stringify(stats) %></span>
     </body>
     
     <script>
@@ -214,8 +214,11 @@
 
 
         //TODO Fix for larger datasets
-        tracks = JSON.parse(`<%- JSON.stringify(trackInfo) %>`);
-        stats = JSON.parse(`<%- JSON.stringify(stats) %>`);
+        tracks = JSON.parse(document.getElementById("trackInfo").textContent);
+        stats = JSON.parse(document.getElementById("stats").textContent);
+        console.log(JSON.stringify(tracks));
+        console.log(JSON.stringify(stats));
+        
 
         options = {
             legend: {
