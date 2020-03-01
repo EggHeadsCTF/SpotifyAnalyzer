@@ -39,141 +39,143 @@
 
 	<body>
 	<div id="main1"><div id="main2">
-	
-	<div id="err" style="display:none;">
-		<h1 id="err-text" class="title" style="color: red;">[value]</h1>
-	</div>
-
-	<section class="section" id="loadIn">	
-		<div id="statistics">
-			<div class="hero is-success">
-				<div class="hero-body">
-					<div class="level">
-						<div class="level-item has-text-centered">
-							<div>
-                                <b><p class="title" id="album"><%= response.type == 'track' ? response.trackInfo.album.name :
-                                                                    response.type == 'album' ? response.trackInfo[0].album.name :
-                                                                    response.playlistInfo.name %></p></b><br>
-								<p class="subtitle" id="artist"><%= response.type == 'track' ? response.trackInfo.album.artists[0].name :
-                                                                    response.type == 'album' ? response.trackInfo[0].album.artists[0].name :
-                                                                    response.playlistInfo.owner.display_name %></p>
-							</div>
-							
-						</div>
-						<div class="level-item has-text-centered">
-							<a href="<%=  response.type == 'track' ? response.trackInfo.album.external_urls.spotify :
-                                        response.type == 'album' ? response.trackInfo[0].album.external_urls.spotify :
-                                        response.playlistInfo.external_urls.spotify
-                                    %>">
-                                <img src="<%=  response.type == 'track' ? response.trackInfo.album.images[1].url :
-                                            response.type == 'album' ? response.trackInfo[0].album.images[1].url :
-                                            response.playlistInfo.images[0].url 
-                                        %>" alt="album image" width="400" height="400" id="album-image" class="link">
-                            </a>
-						</div> 
-					</div>
-				</div>
-			</div>
-			<br><br>
-			<div id="stat-list">
-                <%  let trackInfo = response.type == 'playlist' ? response.trackInfo.tracks : 
-                                    response.type == 'track' ? [response.trackInfo] : response.trackInfo;
-                    let stats = response.type == 'playlist' ? response.audioFeatures.audio_features : 
-                                response.type == 'track' ? [response.audioFeatures] : response.audioFeatures;
-                    %>
-                    <div class="dropdown">
-                        <div class="dropdown-trigger">
-                            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                                <span id="dropdown-text">--Select Graph for Analysis--</span>
-                                <span class="icon is-small">
-                                    <i class="fas fa-angle-down" aria-hidden="true"></i>
-                                </span>
-                            </button>
+    
+    <% if(response == "api_error") { %>
+        <div id="err">
+            <h1 id="err-text" class="title" style="color: red;">An error occurred. Please check the URL and try again.</h1>
+        </div>
+    <% } else { %>
+        <section class="section" id="loadIn">	
+            <div id="statistics">
+                <div class="hero is-success">
+                    <div class="hero-body">
+                        <div class="level">
+                            <div class="level-item has-text-centered">
+                                <div>
+                                    <b><p class="title" id="album"><%= response.type == 'track' ? response.trackInfo.album.name :
+                                                                        response.type == 'album' ? response.trackInfo[0].album.name :
+                                                                        response.playlistInfo.name %></p></b><br>
+                                    <p class="subtitle" id="artist"><%= response.type == 'track' ? response.trackInfo.album.artists[0].name :
+                                                                        response.type == 'album' ? response.trackInfo[0].album.artists[0].name :
+                                                                        response.playlistInfo.owner.display_name %></p>
+                                </div>
+                            </div>
+                            <div class="level-item has-text-centered">
+                                <a href="<%=  response.type == 'track' ? response.trackInfo.album.external_urls.spotify :
+                                            response.type == 'album' ? response.trackInfo[0].album.external_urls.spotify :
+                                            response.playlistInfo.external_urls.spotify
+                                        %>">
+                                    <img src="<%=  response.type == 'track' ? response.trackInfo.album.images[1].url :
+                                                response.type == 'album' ? response.trackInfo[0].album.images[1].url :
+                                                response.playlistInfo.images[0].url 
+                                            %>" alt="album image" width="400" height="400" id="album-image" class="link">
+                                </a>
+                            </div> 
                         </div>
-                        <div class="dropdown-menu" id="dropdown-menu" role="menu">
-                            <div class="dropdown-content">
-                                <a class="dropdown-item" id="reset-dropdown">--Select Graph for Analysis--</a>
-                                <a class="dropdown-item" id="danceability-dropdown">Danceability</a>
-                                <a class="dropdown-item" id="energy-dropdown">Energy</a>
-                                <a class="dropdown-item" id="loudness-dropdown">Loudness</a>
-                                <a class="dropdown-item" id="instrumentalness-dropdown">Instrumentness</a>
-                                <a class="dropdown-item" id="speechiness-dropdown">Speechiness</a>
-                                <a class="dropdown-item" id="tempo-dropdown">Tempo</a>
+                    </div>
+                </div>
+                <br><br>
+                <div id="stat-list">
+                    <%  let trackInfo = response.type == 'playlist' ? response.trackInfo.tracks : 
+                                        response.type == 'track' ? [response.trackInfo] : response.trackInfo;
+                        let stats = response.type == 'playlist' ? response.audioFeatures.audio_features : 
+                                    response.type == 'track' ? [response.audioFeatures] : response.audioFeatures;
+                        %>
+                        <div class="dropdown">
+                            <div class="dropdown-trigger">
+                                <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                                    <span id="dropdown-text">--Select Graph for Analysis--</span>
+                                    <span class="icon is-small">
+                                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                                <div class="dropdown-content">
+                                    <a class="dropdown-item" id="reset-dropdown">--Select Graph for Analysis--</a>
+                                    <a class="dropdown-item" id="danceability-dropdown">Danceability</a>
+                                    <a class="dropdown-item" id="energy-dropdown">Energy</a>
+                                    <a class="dropdown-item" id="loudness-dropdown">Loudness</a>
+                                    <a class="dropdown-item" id="instrumentalness-dropdown">Instrumentness</a>
+                                    <a class="dropdown-item" id="speechiness-dropdown">Speechiness</a>
+                                    <a class="dropdown-item" id="tempo-dropdown">Tempo</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="container" id="graph-container">
-                        <canvas id="stat-chart"></canvas>
-                    </div>
-
-                    <ol>
-                    <% for( let i = 0; i < trackInfo.length; i++ ) { %>
-                        <%
-                        let danceability = Math.round(stats[i].danceability * 100) + "%";
-                        let energy = Math.round(stats[i].energy * 100) + "%";
-                        let loudness = Math.round(Math.abs(-60 + Math.abs(stats[i].loudness))) + "dB";
-                        let instrumentalness = Math.round(stats[i].instrumentalness * 100) + "%";
-                        let speechiness = Math.round(stats[i].speechiness * 100) + "%";
-                        let tempo = Math.round(stats[i].tempo) + 'bpm';
-                        %>
-                        <br><br><br>
-                        <li>
-                            <span>
-                                <div class="container">
-                                    <b><p class="heading" style="font-size: 1em;">Track</p></b>
-                                    <a href="<%= trackInfo[i].external_urls.spotify %> "><b><p class="title" id="track"><%= trackInfo[i].name %></p></b></a>
-                                    <br><br>
-
-                                    <div class="level">
-                                        <div class="level-item">
-                                            <div>
-                                                <b><p class="heading">Danceability​​​     </p></b><br>
-                                                <p class="title"]><%= danceability %></p>
+                        <div class="container" id="graph-container">
+                            <canvas id="stat-chart"></canvas>
+                        </div>
+    
+                        <ol>
+                        <% for( let i = 0; i < trackInfo.length; i++ ) { %>
+                            <%
+                            let danceability = Math.round(stats[i].danceability * 100) + "%";
+                            let energy = Math.round(stats[i].energy * 100) + "%";
+                            let loudness = Math.round(Math.abs(-60 + Math.abs(stats[i].loudness))) + "dB";
+                            let instrumentalness = Math.round(stats[i].instrumentalness * 100) + "%";
+                            let speechiness = Math.round(stats[i].speechiness * 100) + "%";
+                            let tempo = Math.round(stats[i].tempo) + 'bpm';
+                            %>
+                            <br><br><br>
+                            <li>
+                                <span>
+                                    <div class="container">
+                                        <b><p class="heading" style="font-size: 1em;">Track</p></b>
+                                        <a href="<%= trackInfo[i].external_urls.spotify %> "><b><p class="title" id="track"><%= trackInfo[i].name %></p></b></a>
+                                        <br><br>
+    
+                                        <div class="level">
+                                            <div class="level-item">
+                                                <div>
+                                                    <b><p class="heading">Danceability​​​     </p></b><br>
+                                                    <p class="title"]><%= danceability %></p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="level-item">
-                                            <div>
-                                                <b><p class="heading">Energy     </p></b><br>
-                                                <p class="title"><%= energy %></p>
+                                            <div class="level-item">
+                                                <div>
+                                                    <b><p class="heading">Energy     </p></b><br>
+                                                    <p class="title"><%= energy %></p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="level-item">
-                                            <div>
-                                                <b><p class="heading">Loudness     </p></b><br>
-                                                <p class="title"><%= loudness %></p>
+                                            <div class="level-item">
+                                                <div>
+                                                    <b><p class="heading">Loudness     </p></b><br>
+                                                    <p class="title"><%= loudness %></p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="level-item">
-                                            <div>
-                                                <b><p class="heading">Instrumentalness     </p></b><br>
-                                                <p class="title"><%= instrumentalness %></p>
+                                            <div class="level-item">
+                                                <div>
+                                                    <b><p class="heading">Instrumentalness     </p></b><br>
+                                                    <p class="title"><%= instrumentalness %></p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="level-item">
-                                            <div>
-                                                <b><p class="heading">Speechiness     </p></b><br>
-                                                <p class="title"><%= speechiness %></p>
+                                            <div class="level-item">
+                                                <div>
+                                                    <b><p class="heading">Speechiness     </p></b><br>
+                                                    <p class="title"><%= speechiness %></p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="level-item">
-                                            <div>
-                                                <b><p class="heading">Tempo     </p></b><br>
-                                                <p class="title"><%= tempo %></p>
+                                            <div class="level-item">
+                                                <div>
+                                                    <b><p class="heading">Tempo     </p></b><br>
+                                                    <p class="title"><%= tempo %></p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <br><br><br>
-                            </span>
-                        </li>
-                    <% } %>
-                    </ol>
-                
-			</div>
-        </div>
-    </section>
-    <span id="trackInfo" hidden><%= JSON.stringify(trackInfo) %></span>
-    <span id="stats" hidden><%= JSON.stringify(stats) %></span>
+                                    <br><br><br>
+                                </span>
+                            </li>
+                        <% } %>
+                        </ol>
+                </div>
+            </div>
+        </section>
+        <span id="trackInfo" hidden><%= JSON.stringify(trackInfo) %></span>
+        <span id="stats" hidden><%= JSON.stringify(stats) %></span>
+    <% } %>
+
+	
     </body>
     
     <script>

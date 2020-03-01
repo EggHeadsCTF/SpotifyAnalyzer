@@ -16,7 +16,7 @@ app.use(express.static(publicPath));
 
 app.get('/', (req, res) => {
 	res.render('index');
-	
+
 });
 
 app.get('/search', (req, res) => {
@@ -25,6 +25,7 @@ app.get('/search', (req, res) => {
 
 		let response = err ? err : data;
 		//TODO optimize response
+		
 		res.render('search', {response: response});
 	})
 });
