@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title> Spotify Analyzer </title>    
+		<title>Spotify Analyzer</title>    
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
 		<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -20,13 +20,13 @@
 				<p class="subtitle">Get statistics for different songs in Spotify</p>
 				<div class="field">
 					<div class="control">
-						<input onload="" name = 'url' class="input is-rounded is-medium is-info" type="text" placeholder="Input Track, Album, or Playlist" id="input-album">
+						<input onload="" name="url" class="input is-rounded is-medium is-info" title="Must be a valid spotify album, track, or playlist url" type="url" pattern=".*(album|track|tracks|playlist)\/(.*){1}" placeholder="Input Track, Album, or Playlist" id="input-album" required>
 					</div>
 				</div>
 			</div>
 		</section>
 		<div class="container">
-			<button id="analyze" type="submit" onclick=fadeIn() class="button is-medium is-rounded" style="background-color:rgb(30,215,96);">Analyze!</button>
+			<button id="analyze" type="submit" class="button is-medium is-rounded" style="background-color:rgb(30,215,96);">Analyze!</button>
 		</div>
 	</form>
 	<div id="err" style="display:none;">

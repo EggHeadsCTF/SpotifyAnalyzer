@@ -24,18 +24,9 @@ app.get('/search', (req, res) => {
 	API.api(req.query.url, (data, err) => {
 
 		let response = err ? err : data;
-		res.render('query', {response: response});
+		//TODO optimize response
+		res.render('search', {response: response});
 	})
-});
-
-app.post('/ajax', urlencodedParser, (req, res) => {
-	API.api(req.body.uri, (data, err) => {
-		
-		let response = err ? err : data;
-		//console.log("server", response);
-		res.writeHead(200, { "Content-Type": "application/json" });
-		res.end(JSON.stringify(response));
-	});
 });
 
 server.listen(port, () => {
