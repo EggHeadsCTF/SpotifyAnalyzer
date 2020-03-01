@@ -25,6 +25,8 @@ app.get('/search', (req, res) => {
 
 		let response = err ? err : data;
 		//TODO optimize response
+		console.log(response);
+		
 		res.render('search', {response: response});
 	})
 });
