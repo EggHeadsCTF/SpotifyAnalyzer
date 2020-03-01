@@ -107,7 +107,6 @@ module.exports.api = (userInput, _callback) => {
 		if(mediaURI.type === 'playlist') {
 			s.getPlaylistTracks(mediaURI.id).then(function(data) {
 				let tracks = data.body.items.map(val => val.track.id);
-				console.log(tracks);
 				
 				s.getAudioFeaturesForTracks(tracks).then(function(audioFeatures) {
 					s.getTracks(tracks).then(function(trackInfo) {
