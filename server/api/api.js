@@ -117,14 +117,23 @@ module.exports.api = (userInput, _callback) => {
 								trackInfo: trackInfo.body,
 								audioFeatures: audioFeatures.body
 							});
+						}).catch((err) => {
+							_callback(null, 'api_error');
+							console.log('Something went wrong!', err);
 						});
-					})
+					}).catch((err) => {
+						_callback(null, 'api_error');
+						console.log('Something went wrong!', err);
+					});
 					
 				}, function(err) {
 					_callback(null, 'api_error');
 					console.log('Something went wrong!', err);
 			});
 				
+			}).catch((err) => {
+				_callback(null, 'api_error');
+				console.log('Something went wrong!', err);
 			});
 		};
 	})};
