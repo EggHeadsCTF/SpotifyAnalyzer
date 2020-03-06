@@ -1,5 +1,17 @@
 $(document).ready(() => {
 
+    let options = {
+        valueNames: ['danceability', 'energy', 'loudness', 'instrumentalness', 'speechiness', 'tempo']
+    };
+
+    let statList = new List('stats-list', options);
+    
+    let currentSort = "";
+
+    $("#danceability-sort-btn").click(() => {
+        statList.sort('danceability')
+    });
+
     $(".navbar-burger").click(() => {
 
         // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"

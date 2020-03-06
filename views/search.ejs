@@ -7,7 +7,8 @@
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
 		<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
 		<script src="/js/search.js" type="text/javascript"></script>
 		<link rel="stylesheet" href="/css/main.css" />
     </head>
@@ -105,69 +106,133 @@
                         <div class="container" id="graph-container">
                             <canvas id="stat-chart"></canvas>
                         </div>
-    
-                        <ol>
-                        <% for( let i = 0; i < trackInfo.length; i++ ) { %>
-                            <%
-                            let danceability = Math.round(stats[i].danceability * 100) + "%";
-                            let energy = Math.round(stats[i].energy * 100) + "%";
-                            let loudness = Math.round(Math.abs(-60 + Math.abs(stats[i].loudness))) + "dB";
-                            let instrumentalness = Math.round(stats[i].instrumentalness * 100) + "%";
-                            let speechiness = Math.round(stats[i].speechiness * 100) + "%";
-                            let tempo = Math.round(stats[i].tempo) + 'bpm';
-                            %>
-                            <br><br><br>
-                            <li>
-                                <span>
-                                    <div class="container">
-                                        <b><p class="heading" style="font-size: 1em;">Track</p></b>
-                                        <a href="<%= trackInfo[i].external_urls.spotify %> "><b><p class="title" id="track"><%= trackInfo[i].name %></p></b></a>
-                                        <br><br>
-    
-                                        <div class="level">
-                                            <div class="level-item">
-                                                <div>
-                                                    <b><p class="heading">Danceability​​​     </p></b><br>
-                                                    <p class="title"]><%= danceability %></p>
-                                                </div>
-                                            </div>
-                                            <div class="level-item">
-                                                <div>
-                                                    <b><p class="heading">Energy     </p></b><br>
-                                                    <p class="title"><%= energy %></p>
-                                                </div>
-                                            </div>
-                                            <div class="level-item">
-                                                <div>
-                                                    <b><p class="heading">Loudness     </p></b><br>
-                                                    <p class="title"><%= loudness %></p>
-                                                </div>
-                                            </div>
-                                            <div class="level-item">
-                                                <div>
-                                                    <b><p class="heading">Instrumentalness     </p></b><br>
-                                                    <p class="title"><%= instrumentalness %></p>
-                                                </div>
-                                            </div>
-                                            <div class="level-item">
-                                                <div>
-                                                    <b><p class="heading">Speechiness     </p></b><br>
-                                                    <p class="title"><%= speechiness %></p>
-                                                </div>
-                                            </div>
-                                            <div class="level-item">
-                                                <div>
-                                                    <b><p class="heading">Tempo     </p></b><br>
-                                                    <p class="title"><%= tempo %></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <br>
+
+                        <div class="level">
+                            <div class="level-item">
+                                <button class="button" id="danceability-sort-btn" style="background-color:rgb(30,215,96); border-style: none;">Danceability <i class="fas fa-sort"></i></button>
+                            </div>
+                            <div class="level-item">
+                                <button class="button" id="energy-sort-btn" style="background-color:rgb(30,215,96); border-style: none;">Energy <i class="fas fa-sort"></i></button>
+                            </div>
+                            <div class="level-item">
+                                <button class="button" id="loudness-sort-btn" style="background-color:rgb(30,215,96); border-style: none;">Loudness <i class="fas fa-sort"></i></button>
+                            </div>
+                            <div class="level-item">
+                                <button class="button" id="instrumentalness-sort-btn" style="background-color:rgb(30,215,96); border-style: none;">Instrumentalness <i class="fas fa-sort"></i></button>
+                            </div>
+                            <div class="level-item">
+                                <button class="button" id="speechiness-sort-btn" style="background-color:rgb(30,215,96); border-style: none;">Speechiness <i class="fas fa-sort"></i></button>
+                            </div>
+                            <div class="level-item">
+                                <button class="button" id="tempo-sort-btn" style="background-color:rgb(30,215,96); border-style: none;">Tempo <i class="fas fa-sort"></i></button>
+                            </div>
+                        </div>
+                        <!-- TODO Make this into a table again -->
+                        <div id="stats-list">
+                            <table>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Danceability <i class="fas fa-sort"></i></th>
+                                    <th>Energy <i class="fas fa-sort"></i></th>
+                                    <th>Loudness <i class="fas fa-sort"></i></th>
+                                    <th>Instrumentalness <i class="fas fa-sort"></i></th>
+                                    <th>Speechiness <i class="fas fa-sort"></i></th>
+                                    <th>Tempo <i class="fas fa-sort"></i></th>
+                                </tr>
+                                <% for( let i = 0; i < trackInfo.length; i++ ) { %>
+                                    <%
+                                    let danceability = Math.round(stats[i].danceability * 100) + "%";
+                                    let energy = Math.round(stats[i].energy * 100) + "%";
+                                    let loudness = Math.round(Math.abs(-60 + Math.abs(stats[i].loudness))) + "dB";
+                                    let instrumentalness = Math.round(stats[i].instrumentalness * 100) + "%";
+                                    let speechiness = Math.round(stats[i].speechiness * 100) + "%";
+                                    let tempo = Math.round(stats[i].tempo) + 'bpm';
+                                    %>
+                                    <tr>
+                                        <td style="color: rgb(30,215,96)"><%= i+1 %>.</td>
+                                        <td><a id="track" href="<%= trackInfo[i].external_urls.spotify %> "><b><%= trackInfo[i].name %></b></a></td>
+                                        <td><%= danceability %></td>
+                                        <td><%= energy %></td>
+                                        <td><%= loudness %></td>
+                                        <td><%= instrumentalness %></td>
+                                        <td><%= speechiness %></td>
+                                        <td><%= tempo %></td>
+                                    </tr>
+                                <% } %>
+                            </table>
+                            <ol class="list">
+                                <% for( let i = 0; i < trackInfo.length; i++ ) { %>
+                                    <%
+                                    let danceability = Math.round(stats[i].danceability * 100) + "%";
+                                    let energy = Math.round(stats[i].energy * 100) + "%";
+                                    let loudness = Math.round(Math.abs(-60 + Math.abs(stats[i].loudness))) + "dB";
+                                    let instrumentalness = Math.round(stats[i].instrumentalness * 100) + "%";
+                                    let speechiness = Math.round(stats[i].speechiness * 100) + "%";
+                                    let tempo = Math.round(stats[i].tempo) + 'bpm';
+                                    %>
                                     <br><br><br>
-                                </span>
-                            </li>
-                        <% } %>
-                        </ol>
+                                    
+                                    <li class="list">
+                                        <span>
+                                            <div class="container">
+                                                <b><p class="heading" style="font-size: 1em;">Track</p></b>
+                                                <a href="<%= trackInfo[i].external_urls.spotify %> "><b><p class="title" id="track"><%= trackInfo[i].name %></p></b></a>
+                                                <br><br>
+            
+                                                <div class="level">
+                                                    <div class="level-item">
+                                                        <div>
+                                                            <b><p class="heading">Danceability​​​     </p></b><br>
+                                                            <p class="title"><%= danceability %></p>
+                                                            <span class="danceability" hidden><%= stats[i].danceability %></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="level-item">
+                                                        <div>
+                                                            <b><p class="heading">Energy     </p></b><br>
+                                                            <p class="title"><%= energy %></p>
+                                                            <span class="energy" hidden><%= stats[i].energy %></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="level-item">
+                                                        <div>
+                                                            <b><p class="heading">Loudness     </p></b><br>
+                                                            <p class="title"><%= loudness %></p>
+                                                            <span class="loudness" hidden><%= Math.abs(-60 + Math.abs(stats[i].loudness)) %></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="level-item">
+                                                        <div>
+                                                            <b><p class="heading">Instrumentalness     </p></b><br>
+                                                            <p class="title"><%= instrumentalness %></p>
+                                                            <span class="instrumentalness" hidden><%= stats[i].instrumentalness %></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="level-item">
+                                                        <div>
+                                                            <b><p class="heading">Speechiness     </p></b><br>
+                                                            <p class="title"><%= speechiness %></p>
+                                                            <span class="speechiness" hidden><%= stats[i].speechiness %></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="level-item">
+                                                        <div>
+                                                            <b><p class="heading">Tempo     </p></b><br>
+                                                            <p class="title"><%= tempo %></p>
+                                                            <span class="tempo" hidden><%= stats[i].tempo %></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br><br><br>
+                                        </span>
+                                    </li>
+                                <% } %>
+                            </ol>
+                        </div>
+                        
                 </div>
             </div>
         </section>

@@ -95,6 +95,7 @@ a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, bo
 }
 ol {
     padding-left: 3em;
+    background-color: black;
 }
 ol li {
     -webkit-column-break-inside: avoid;
@@ -117,6 +118,10 @@ ul {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     padding-inline-start: 40px;
+}
+.list {
+    background-color: #191414;
+    box-shadow: none;
 }
 .Root__main-view, .Root__nav-bar {
     display: -webkit-box;
@@ -158,10 +163,27 @@ ul {
 .container {
     text-align: center;
 }
-table, th, td, thead, tbody {
-    border: 0px;
+table {
+    border-style: none;
+    border-collapse: separate;
+    border-spacing: 1.5em;
     color: white;
-    background-color:rgb(30,215,96);
+    background-color: transparent;
+}
+table th {
+    color: rgb(30,215,96);
+    font-size: 1em;
+}
+#track {
+    font-size: 1.3em;
+}
+table td {
+    color: white;
+    font-size: 1.3em;
+    font-family: spotify-circular,spotify-circular-cyrillic,spotify-circular-arabic,spotify-circular-hebrew,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,Meiryo,MS Gothic,sans-serif;
+}
+table td a {
+    color: white;
 }
 @-webkit-keyframes logo-in {
     from {
