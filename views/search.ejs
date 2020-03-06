@@ -257,27 +257,27 @@
 
         $("#danceability-dropdown").click(() => {
             setElements("Danceability");
-            updateGraph('Danceability', tracks.map(val => val.name), stats.map(val => val.danceability));
+            updateGraph('Danceability (0-1, bigger is more danceable)', tracks.map(val => val.name), stats.map(val => val.danceability));
         });
         $("#energy-dropdown").click(() => {
             setElements("Energy");
-            updateGraph('Energy', tracks.map(val => val.name), stats.map(val => val.energy));
+            updateGraph('Energy (0-1, bigger is more energetic)', tracks.map(val => val.name), stats.map(val => val.energy));
         });
         $("#loudness-dropdown").click(() => {     
             setElements("Loudness"); 
-            updateGraph('Loudness', tracks.map(val => val.name), stats.map(val => Math.abs(-60 + Math.abs(val.loudness))));
+            updateGraph('Loudness (0-60, bigger is louder)', tracks.map(val => val.name), stats.map(val => Math.abs(-60 + Math.abs(val.loudness))));
         });
         $("#instrumentalness-dropdown").click(() => { 
             setElements("Instrumentalness");
-            updateGraph('Instrumentalness', tracks.map(val => val.name), stats.map(val => val.instrumentalness));
+            updateGraph('Instrumentalness (0-1, bigger is more instrumental)', tracks.map(val => val.name), stats.map(val => val.instrumentalness));
         });
         $("#speechiness-dropdown").click(() => {
             setElements("Speechiness");
-            updateGraph('Speechiness', tracks.map(val => val.name), stats.map(val => val.speechiness));
+            updateGraph('Speechiness (0-1, bigger is speechier)', tracks.map(val => val.name), stats.map(val => val.speechiness));
         });
         $("#tempo-dropdown").click(() => {
             setElements("Tempo");
-            updateGraph('Tempo', tracks.map(val => val.name), stats.map(val => val.tempo));
+            updateGraph('Tempo (0-999, bigger is faster)', tracks.map(val => val.name), stats.map(val => val.tempo));
         });
     </script>
 </html>
