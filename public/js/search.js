@@ -8,6 +8,16 @@ $(document).ready(() => {
     
     let currentSort = "";
 
+    let statsTable = $("#stats-table").DataTable({
+        scrollCollapse: true,
+        autoWidth: false,
+        "columnDefs": [
+            { "width": "2%", "targets": 0},
+            { "width": "30%", "targets": 1},
+            { "width": "7%", "targets": [2,3,4,5,6,7]},
+        ]
+    });
+
     $("#danceability-sort-btn").click(() => {
         statList.sort('danceability')
     });

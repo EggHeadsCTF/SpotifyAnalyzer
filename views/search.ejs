@@ -4,11 +4,13 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Spotify Analyzer</title>    
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
-		<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+        <script src="https://kit.fontawesome.com/dccae9b104.js" crossorigin="anonymous"></script>
 		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+        <script src="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"></script>
+        <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 		<script src="/js/search.js" type="text/javascript"></script>
 		<link rel="stylesheet" href="/css/main.css" />
     </head>
@@ -53,9 +55,12 @@
                         <div class="level">
                             <div class="level-item has-text-centered">
                                 <div>
+                                    <a href="<%=  response.type == 'track' ? response.trackInfo.album.external_urls.spotify :
+                                                    response.type == 'album' ? response.trackInfo[0].album.external_urls.spotify :
+                                                    response.playlistInfo.external_urls.spotify %>">
                                     <b><p class="title" id="album"><%= response.type == 'track' ? response.trackInfo.album.name :
                                                                         response.type == 'album' ? response.trackInfo[0].album.name :
-                                                                        response.playlistInfo.name %></p></b><br>
+                                                                        response.playlistInfo.name %></p></b></a><br>
                                     <p class="subtitle" id="artist"><%= response.type == 'track' ? response.trackInfo.album.artists[0].name :
                                                                         response.type == 'album' ? response.trackInfo[0].album.artists[0].name :
                                                                         response.playlistInfo.owner.display_name %></p>
@@ -128,39 +133,42 @@
                                 <button class="button" id="tempo-sort-btn" style="background-color:rgb(30,215,96); border-style: none;">Tempo <i class="fas fa-sort"></i></button>
                             </div>
                         </div>
-                        <!-- TODO Make this into a table again -->
                         <div id="stats-list">
-                            <table>
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                    <th>Danceability <i class="fas fa-sort"></i></th>
-                                    <th>Energy <i class="fas fa-sort"></i></th>
-                                    <th>Loudness <i class="fas fa-sort"></i></th>
-                                    <th>Instrumentalness <i class="fas fa-sort"></i></th>
-                                    <th>Speechiness <i class="fas fa-sort"></i></th>
-                                    <th>Tempo <i class="fas fa-sort"></i></th>
-                                </tr>
-                                <% for( let i = 0; i < trackInfo.length; i++ ) { %>
-                                    <%
-                                    let danceability = Math.round(stats[i].danceability * 100) + "%";
-                                    let energy = Math.round(stats[i].energy * 100) + "%";
-                                    let loudness = Math.round(Math.abs(-60 + Math.abs(stats[i].loudness))) + "dB";
-                                    let instrumentalness = Math.round(stats[i].instrumentalness * 100) + "%";
-                                    let speechiness = Math.round(stats[i].speechiness * 100) + "%";
-                                    let tempo = Math.round(stats[i].tempo) + 'bpm';
-                                    %>
+                            <table id="stats-table">
+                                <thead>
                                     <tr>
-                                        <td style="color: rgb(30,215,96)"><%= i+1 %>.</td>
-                                        <td><a id="track" href="<%= trackInfo[i].external_urls.spotify %> "><b><%= trackInfo[i].name %></b></a></td>
-                                        <td><%= danceability %></td>
-                                        <td><%= energy %></td>
-                                        <td><%= loudness %></td>
-                                        <td><%= instrumentalness %></td>
-                                        <td><%= speechiness %></td>
-                                        <td><%= tempo %></td>
+                                        <th style="overflow: visible;"># <i class="fas fa-sort"></i></th>
+                                        <th>Track <i class="fas fa-sort"></i></th>
+                                        <th id="danceability-head">Danceability <i class="fas fa-sort"></i></th>
+                                        <th id="energy-head">Energy <i class="fas fa-sort"></i></th>
+                                        <th id="loudness-head">Loudness <i class="fas fa-sort"></i></th>
+                                        <th id="instrumentalness-head">Instrumentalness <i class="fas fa-sort"></i></th>
+                                        <th id="speechiness-head">Speechiness <i class="fas fa-sort"></i></th>
+                                        <th id="tempo-head">Tempo <i class="fas fa-sort"></i></th>
                                     </tr>
-                                <% } %>
+                                </thead>
+                                <tbody>
+                                    <% for( let i = 0; i < trackInfo.length; i++ ) { %>
+                                        <%
+                                        let danceability = Math.round(stats[i].danceability * 100) + "%";
+                                        let energy = Math.round(stats[i].energy * 100) + "%";
+                                        let loudness = Math.round(Math.abs(-60 + Math.abs(stats[i].loudness))) + "dB";
+                                        let instrumentalness = Math.round(stats[i].instrumentalness * 100) + "%";
+                                        let speechiness = Math.round(stats[i].speechiness * 100) + "%";
+                                        let tempo = Math.round(stats[i].tempo) + 'bpm';
+                                        %>
+                                        <tr>
+                                            <td style="color: rgb(30,215,96);"><%= i+1 %>.</td>
+                                            <td><a id="track" href="<%= trackInfo[i].external_urls.spotify %> "><b><%= trackInfo[i].name %></b></a></td>
+                                            <td><%= danceability %></td>
+                                            <td><%= energy %></td>
+                                            <td><%= loudness %></td>
+                                            <td><%= instrumentalness %></td>
+                                            <td><%= speechiness %></td>
+                                            <td><%= tempo %></td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
                             </table>
                             <ol class="list">
                                 <% for( let i = 0; i < trackInfo.length; i++ ) { %>
