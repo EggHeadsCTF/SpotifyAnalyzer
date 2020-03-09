@@ -111,29 +111,12 @@
                         <div class="container" id="graph-container">
                             <canvas id="stat-chart"></canvas>
                         </div>
-                        <br>
+                        <br><br>
 
-                        <div class="level">
-                            <div class="level-item">
-                                <button class="button" id="danceability-sort-btn" style="background-color:rgb(30,215,96); border-style: none;">Danceability <i class="fas fa-sort"></i></button>
-                            </div>
-                            <div class="level-item">
-                                <button class="button" id="energy-sort-btn" style="background-color:rgb(30,215,96); border-style: none;">Energy <i class="fas fa-sort"></i></button>
-                            </div>
-                            <div class="level-item">
-                                <button class="button" id="loudness-sort-btn" style="background-color:rgb(30,215,96); border-style: none;">Loudness <i class="fas fa-sort"></i></button>
-                            </div>
-                            <div class="level-item">
-                                <button class="button" id="instrumentalness-sort-btn" style="background-color:rgb(30,215,96); border-style: none;">Instrumentalness <i class="fas fa-sort"></i></button>
-                            </div>
-                            <div class="level-item">
-                                <button class="button" id="speechiness-sort-btn" style="background-color:rgb(30,215,96); border-style: none;">Speechiness <i class="fas fa-sort"></i></button>
-                            </div>
-                            <div class="level-item">
-                                <button class="button" id="tempo-sort-btn" style="background-color:rgb(30,215,96); border-style: none;">Tempo <i class="fas fa-sort"></i></button>
-                            </div>
-                        </div>
-                        <div id="stats-list">
+                        <label class="label" for="viewmode" style="color: #858585;">View Mode: </label>
+                        <button class="button" id="viewmode">Table&nbsp;<i class="fas fa-table" aria-hidden="true"></i></button>
+                        <br>
+                        <div id="stats-table-div">
                             <table id="stats-table">
                                 <thead>
                                     <tr>
@@ -170,6 +153,10 @@
                                     <% } %>
                                 </tbody>
                             </table>
+                            <br><br><br>
+                        </div>
+                        
+                        <div id="stats-list" style="display: none;">
                             <ol class="list">
                                 <% for( let i = 0; i < trackInfo.length; i++ ) { %>
                                     <%

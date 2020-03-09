@@ -11,15 +11,20 @@ $(document).ready(() => {
     let statsTable = $("#stats-table").DataTable({
         scrollCollapse: true,
         autoWidth: false,
+        //"dom": '<"toolbar"lf>rtip',
         "columnDefs": [
             { "width": "2%", "targets": 0},
             { "width": "30%", "targets": 1},
             { "width": "7%", "targets": [2,3,4,5,6,7]},
         ]
     });
+    //$("div.toolbar").append('<button id="viewmode"><i class="fas fa-table" aria-hidden="true"></i></button>');
 
-    $("#danceability-sort-btn").click(() => {
-        statList.sort('danceability')
+    $("#viewmode").click(() => {
+        $("#viewmode").html($("#viewmode").html() == 'List&nbsp;<i class="fas fa-list" aria-hidden="true"></i>' ? 
+                                                    'Table&nbsp;<i class="fas fa-table"></i>' : 'List&nbsp;<i class="fas fa-list"></i>')
+        $("#stats-table-div").toggle();
+        $("#stats-list").toggle();
     });
 
     $(".navbar-burger").click(() => {

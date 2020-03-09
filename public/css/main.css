@@ -567,7 +567,9 @@ table td a {
               filter: grayscale(0%) brightness(100%);
           }
       }
-
+#viewmode {
+    margin-bottom: 1em;
+}
   @keyframes logo-in {
     from {
       filter: grayscale(100%) brightness(130%);
