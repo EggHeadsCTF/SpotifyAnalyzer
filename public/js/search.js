@@ -1,12 +1,5 @@
 $(document).ready(() => {
-
-    let options = {
-        valueNames: ['danceability', 'energy', 'loudness', 'instrumentalness', 'speechiness', 'tempo']
-    };
-
-    let statList = new List('stats-list', options);
     
-    let currentSort = "";
 
     let statsTable = $("#stats-table").DataTable({
         scrollCollapse: true,
@@ -18,13 +11,17 @@ $(document).ready(() => {
             { "width": "7%", "targets": [2,3,4,5,6,7]},
         ]
     });
+
+    statsTable.on('search', (e) => {
+        console.log(e);
+    })
     //$("div.toolbar").append('<button id="viewmode"><i class="fas fa-table" aria-hidden="true"></i></button>');
 
     $("#viewmode").click(() => {
         $("#viewmode").html($("#viewmode").html() == 'List&nbsp;<i class="fas fa-list" aria-hidden="true"></i>' ? 
                                                     'Table&nbsp;<i class="fas fa-table"></i>' : 'List&nbsp;<i class="fas fa-list"></i>')
         $("#stats-table-div").toggle();
-        $("#stats-list").toggle();
+        $("#stats-list-div").toggle();
     });
 
     $(".navbar-burger").click(() => {

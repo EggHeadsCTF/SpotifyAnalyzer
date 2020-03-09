@@ -4,12 +4,11 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Spotify Analyzer</title>    
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css" rel="stylesheet">
         <script src="https://kit.fontawesome.com/dccae9b104.js" crossorigin="anonymous"></script>
 		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
-        <script src="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"></script>
+        <link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet"></link>
         <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 		<script src="/js/search.js" type="text/javascript"></script>
 		<link rel="stylesheet" href="/css/main.css" />
@@ -155,9 +154,9 @@
                             </table>
                             <br><br><br>
                         </div>
-                        
-                        <div id="stats-list" style="display: none;">
-                            <ol class="list">
+
+                        <div id="stats-list-div" style="display: none;">
+                            <ol id="stats-list" class="list">
                                 <% for( let i = 0; i < trackInfo.length; i++ ) { %>
                                     <%
                                     let danceability = Math.round(stats[i].danceability * 100) + "%";
@@ -169,7 +168,7 @@
                                     %>
                                     <br><br><br>
                                     
-                                    <li class="list">
+                                    <li id="li-<%= i %>">
                                         <span>
                                             <div class="container">
                                                 <b><p class="heading" style="font-size: 1em;">Track</p></b>
