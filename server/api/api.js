@@ -1,9 +1,7 @@
 const secrets = require('../../secrets');
 const Spotify = require('spotify-web-api-node');
 const secretVars = new secrets.secrets();
-//https://open.spotify.com/playlist/5aDO1Dk16b69Fx64FBAM6E?si=BlSyEbHORPir3B6X7xn05w
 
-//https://open.spotify.com/playlist/6lsUhZektNvNH6e4bv5y5S?si=Phrx8ydxQL2c5eUx2Nf0-w
 let rspData = '';
 
 // credentials are optional
@@ -109,7 +107,6 @@ module.exports.api = (userInput, _callback) => {
 		if(mediaURI.type === 'playlist') {
 			s.getPlaylistTracks(mediaURI.id).then(function(data) {
 				let tracks = data.body.items.map(val => val.track.id);
-				console.log(tracks);
 				
 				s.getAudioFeaturesForTracks(tracks).then(function(audioFeatures) {
 					s.getTracks(tracks).then(function(trackInfo) {
@@ -120,14 +117,23 @@ module.exports.api = (userInput, _callback) => {
 								trackInfo: trackInfo.body,
 								audioFeatures: audioFeatures.body
 							});
+						}).catch((err) => {
+							_callback(null, 'api_error');
+							console.log('Something went wrong!', err);
 						});
-					})
+					}).catch((err) => {
+						_callback(null, 'api_error');
+						console.log('Something went wrong!', err);
+					});
 					
 				}, function(err) {
 					_callback(null, 'api_error');
 					console.log('Something went wrong!', err);
 			});
 				
+			}).catch((err) => {
+				_callback(null, 'api_error');
+				console.log('Something went wrong!', err);
 			});
 		};
 	})};
