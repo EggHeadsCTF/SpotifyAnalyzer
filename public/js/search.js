@@ -8,7 +8,7 @@ $(document).ready(() => {
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "pageLength": 25,
         "columnDefs": [
-            { "width": "2%", "targets": 0},
+            { "width": "3%", "targets": 0},
             { "width": "30%", "targets": 1},
             { "width": "7%", "targets": [2,3,4,5,6,7]},
         ]
