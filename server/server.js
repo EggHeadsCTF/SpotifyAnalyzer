@@ -21,13 +21,15 @@ app.get('/', (req, res) => {
 
 app.get('/search', (req, res) => {
 	console.log(req.query.url);
-	API.api(req.query.url, (data, err) => {
-
-		let response = err ? err : data;
-		//TODO optimize response
-		
-		res.render('search', {response: response});
-	})
+	API.api(req.query.url)
+		.then((retObj) => {
+			res.render('search', {response: retObj});
+			console.log(retObj);
+			
+		}).catch((err) => {
+			console.error("Error", err);
+			res.render('search', {response: "api_error"});
+		});
 });
 
 server.listen(port, () => {

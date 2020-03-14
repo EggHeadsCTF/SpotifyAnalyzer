@@ -12,7 +12,7 @@ redirectUri: secretVars.redirectURI
 });
 
 //* Takes URI and returns object with attr id and type
-function parseInput (input) {
+let parseInput = (input) => {
 	var parserSI = input.split('?')[0];
 	let result = parserSI.match(/(album|track|tracks|playlist)\/(.*)/g);
 	return /(album)/g.test(input) ? {id: result.join("").split("/")[1], type: 'album'}
@@ -22,118 +22,95 @@ function parseInput (input) {
 }
 
 // Authenticate and get access token
-async function setCredentials(_callback) {
-	s.clientCredentialsGrant()
-	.then(function(data) {
-		rspData = data; // For future
-		// Save the access token so that it's used in future calls
-		s.setAccessToken(data.body['access_token']);
-		_callback();
-	}, function(err) {
-		console.log('Something went wrong when retrieving an access token', err.message);
-	})
+let setCredentials = () => {
+    return new Promise((resolve, reject) => {
+        s.clientCredentialsGrant().then((data) => {
+            rspData = data; // For future
+            // Save the access token so that it's used in future calls
+            s.setAccessToken(data.body['access_token']);
+            resolve();
+        }).catch(function(err) {
+            reject(err);
+        });
+    });
 };
 
-// Get features from track
-async function getTrackFeatures(id, _callback) {
-	setCredentials(() => {
-		s.getAudioFeaturesForTrack(id).then(function(data) {
-				// console.log(data.body.energy);
-				_callback(data.body);
-			}, function(err) {
-				console.log("Track feature error", err);
-		});
-	});
-}
 
-// Visible to other js
-module.exports.api = (userInput, _callback) => {
-	let mediaURI = parseInput(userInput);
-	setCredentials(() => {
-		console.log("Access token is " + rspData.body['access_token']);
-		
-		// Something bad happened
-		if(!mediaURI) {
-			_callback(null, 'invalid_url');
-		}
-		
-		// URI is album
-		if(mediaURI.type === "album") {
-			s.getAlbumTracks(mediaURI.id).then(
-				function(data) {
+let retObj = {};
 
-					// Get ids of all tracks in album
-					let tracks = data.body.items.map(val => val.id);
+module.exports.api = async (userInput) => {
+    let mediaURI = parseInput(userInput);
+    await setCredentials();
+    if(mediaURI.type === "track") {
+        retObj.type = "track";
 
-					s.getAudioFeaturesForTracks(tracks).then(function(data) {
-						let audioFeatures = data.body.audio_features;
-						s.getTracks(tracks).then(function(nameReq) {
-							_callback({
-								type: 'album',
-								trackInfo: nameReq.body.tracks,
-								audioFeatures: audioFeatures
-							});
-						});
-					});
-					
-				}, function(err) {
-					_callback(null, 'api_error');
-					console.log('Something went wrong!', err);
-				});
-		}
+        retObj.trackInfo = (await s.getTrack(mediaURI.id)).body;
+        retObj.audioFeatures = (await s.getAudioFeaturesForTrack(mediaURI.id)).body.audio_features;
+        return retObj;
+        /* structure:
+            {
+                type
+                trackInfo
+                audioFeatures
+            } */
+    } else if(mediaURI.type === "album") {
+        retObj.type = "album";
 
-		// URI is track
-		if(mediaURI.type === "track") {
-			console.log("track");
-			
-			getTrackFeatures(mediaURI.id, (audioFeatures) => {
-				s.getTrack(mediaURI.id).then(
-					function(nameReq) {
-/* 						console.log(nameReq.body.album.name);
-						console.log(nameReq.body.album.artists);
-						console.log(nameReq.body.name); */
-						_callback({
-							type: 'track',
-							trackInfo: nameReq.body,
-							audioFeatures: audioFeatures
-						});
-					}, function(err) {
-						_callback(null, 'api_error');
-						console.log('Something went wrong!', err);
-				});	
-			});
-		}
-		
-		if(mediaURI.type === 'playlist') {
-			s.getPlaylistTracks(mediaURI.id).then(function(data) {
-				let tracks = data.body.items.map(val => val.track.id);
-				
-				s.getAudioFeaturesForTracks(tracks).then(function(audioFeatures) {
-					s.getTracks(tracks).then(function(trackInfo) {
-						s.getPlaylist(mediaURI.id).then(function(info) {
-							_callback({
-								type: 'playlist',
-								playlistInfo: info.body,
-								trackInfo: trackInfo.body,
-								audioFeatures: audioFeatures.body
-							});
-						}).catch((err) => {
-							_callback(null, 'api_error');
-							console.log('Something went wrong!', err);
-						});
-					}).catch((err) => {
-						_callback(null, 'api_error');
-						console.log('Something went wrong!', err);
-					});
-					
-				}, function(err) {
-					_callback(null, 'api_error');
-					console.log('Something went wrong!', err);
-			});
-				
-			}).catch((err) => {
-				_callback(null, 'api_error');
-				console.log('Something went wrong!', err);
-			});
-		};
-	})};
+        let trackIDs = (await s.getAlbumTracks(mediaURI.id)).body.items.map(val => val.id);
+        retObj.trackInfo = (await s.getTracks(trackIDs)).body.tracks;
+        retObj.audioFeatures = (await s.getAudioFeaturesForTracks(trackIDs)).body.audio_features;
+        return retObj;
+        /* structure:
+            {
+                type
+                trackInfo
+                audioFeatures
+            } */
+    } else if(mediaURI.type === "playlist") {
+        retObj.type = "playlist";
+
+        retObj.playlistInfo = (await s.getPlaylist(mediaURI.id)).body;
+
+        let numTracks = retObj.playlistInfo.tracks.total;
+        let idArray = [];
+
+        console.log("track ids");
+        // 100 track id limit, so we query 100 tracks at a time
+        for(let i = 0; i < numTracks; i+= 100) {
+            idArray = idArray.concat((await s.getPlaylistTracks(mediaURI.id, {offset: i})).body.items.map(val => val.track.id));
+        }
+        
+        // first query so we get an array to concat to
+        retObj.audioFeatures = (await s.getAudioFeaturesForTracks(idArray.slice(0, 100))).body.audio_features;
+        // query 100 tracks at a time for audio features
+        console.log("audio features");
+        for(let i = 100; i < idArray.length; i += 100) {
+            console.log(i);
+            retObj.audioFeatures = retObj.audioFeatures.concat((
+                await s.getAudioFeaturesForTracks(idArray.slice(i, i+100))
+            ).body.audio_features);
+        }
+
+        // first query so we get other data and an array to concat to
+        retObj.trackInfo = (await s.getTracks(idArray.slice(0, 50))).body.tracks;
+        // query 50 tracks at a time for track info
+        console.log("track");
+        for(let i = 50; i < idArray.length; i+= 50) {
+            console.log(i);
+            retObj.trackInfo = retObj.trackInfo.concat((
+                await s.getTracks(idArray.slice(i, i+50))
+            ).body.tracks);
+        }
+        
+        return retObj;
+        /* structure:
+            {
+                type
+                playlistInfo
+                trackInfo
+                audioFeatures
+            } */
+    }
+};
+
+

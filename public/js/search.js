@@ -5,6 +5,8 @@ $(document).ready(() => {
         scrollCollapse: true,
         autoWidth: false,
         //"dom": '<"toolbar"lf>rtip',
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "pageLength": 25,
         "columnDefs": [
             { "width": "2%", "targets": 0},
             { "width": "30%", "targets": 1},
