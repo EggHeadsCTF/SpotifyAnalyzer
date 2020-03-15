@@ -15,12 +15,12 @@
 	<div id="main1"><div id="main2">
 	<form action="/search" method="get">
 		<section class="section">
-			<div class = "container">
+			<div class="container" id="search-div">
 				<a href="/"><h1 class="title" style="font-size: 4em; color: rgb(30,215,96);">Spotify Analyzer</h1></a>
 				<p class="subtitle">Get statistics for different songs in Spotify</p>
 				<div class="field">
 					<div class="control">
-						<input onload="" name="url" class="input is-rounded is-medium is-info" title="Must be a valid spotify album, track, or playlist url" type="url" pattern=".*(album|track|tracks|playlist)\/(.*){1}" placeholder="Input Track, Album, or Playlist" id="input-album" required>
+						<input onload="" name="music" class="input is-rounded is-medium is-info" title="Must be a valid album, track, or playlist" placeholder="Input Track, Album, or Playlist" id="search-input" required>
 					</div>
 				</div>
 			</div>

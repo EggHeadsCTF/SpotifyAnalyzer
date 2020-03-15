@@ -1,31 +1,6 @@
 $(document).ready(() => {
     
 
-    let statsTable = $("#stats-table").DataTable({
-        scrollCollapse: true,
-        autoWidth: false,
-        //"dom": '<"toolbar"lf>rtip',
-        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-        "pageLength": 25,
-        "columnDefs": [
-            { "width": "4%", "targets": 0},
-            { "width": "30%", "targets": 1},
-            { "width": "7%", "targets": [2,3,4,5,6,7]},
-        ]
-    });
-
-    statsTable.on('search', (e) => {
-        console.log(e);
-    })
-    //$("div.toolbar").append('<button id="viewmode"><i class="fas fa-table" aria-hidden="true"></i></button>');
-
-    $("#viewmode").click(() => {
-        $("#viewmode").html($("#viewmode").html() == 'List&nbsp;<i class="fas fa-list" aria-hidden="true"></i>' ? 
-                                                    'Table&nbsp;<i class="fas fa-table"></i>' : 'List&nbsp;<i class="fas fa-list"></i>')
-        $("#stats-table-div").toggle();
-        $("#stats-list-div").toggle();
-    });
-
     $(".navbar-burger").click(() => {
 
         // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
@@ -34,9 +9,37 @@ $(document).ready(() => {
 
     });
 
-    $(".dropdown").click(() => {
-        $(".dropdown").toggleClass("is-active");
-    })
+    $('#analyze').click(() => {
+        $('#analyze').addClass('is-loading');
+    });
+
+    $('#albumBtn').click(() => {
+        $('#trackResults').hide();
+        $('#playlistResults').hide();
+        $('#albumResults').show();
+
+        $('#albumBtn').attr("class", "button is-success");
+        $('#playlistBtn').attr("class", "button");
+        $('#trackBtn').attr("class", "button");
+    });
+    $('#playlistBtn').click(() => {
+        $('#trackResults').hide();
+        $('#playlistResults').show();
+        $('#albumResults').hide();
+
+        $('#albumBtn').attr("class", "button");
+        $('#playlistBtn').attr("class", "button is-success");
+        $('#trackBtn').attr("class", "button");
+    });
+    $('#trackBtn').click(() => {
+        $('#trackResults').show();
+        $('#playlistResults').hide();
+        $('#albumResults').hide();
+
+        $('#albumBtn').attr("class", "button");
+        $('#playlistBtn').attr("class", "button");
+        $('#trackBtn').attr("class", "button is-success");
+    });
 
     function fadeIn() {
         var element = document.getElementById("loadIn");
@@ -51,9 +54,4 @@ $(document).ready(() => {
             op += op * 0.1;
         }, 50);
     }
-    $('#analyze').click(() => {
-        if(!$('#input-album input:invalid')) {
-            $('#analyze').addClass('is-loading');
-        }
-    });
 });

@@ -14,8 +14,42 @@ $(document).ready(() => {
         }, 50);
     }
 
+    /* $('#search-input').bind('input', () => {
+        let $this = $(this);
+
+        clearTimeout($this.data('timer'));
+        console.log("set timer");
+        $this.data('timer', setTimeout(function(){
+            $this.removeData('timer');
+
+            console.log('querying');
+            let query = $('#search-input').val();
+            if(query != '') {
+                $.ajax({
+                    type: 'POST',
+                    url: '/ajax',
+                    data: {query: query}
+                }).done((response) => {
+                    let result = JSON.parse(response);
+                    result.tracks.items.forEach((element) => {
+                        console.log("Name: ", element.name);
+                        console.log("Album: ", element.album.name);
+                        console.log("Artist: ", element.artists[0].name);
+                        console.log();
+                        
+                    })
+                    console.log(result.tracks);
+                }).fail(() => {
+                    console.error("bad ting");
+                });
+            }
+            
+        }, 1500));
+        
+    }); */
+
     $('#analyze').click(() => {
-        if(!$('#input-album input:invalid')) {
+        if(!$('#search-input input:invalid')) {
             $('#analyze').addClass('is-loading');
         }
         

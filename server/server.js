@@ -16,20 +16,38 @@ app.use(express.static(publicPath));
 
 app.get('/', (req, res) => {
 	res.render('index');
-
 });
 
-app.get('/search', (req, res) => {
+app.get('/result', (req, res) => {
 	console.log(req.query.url);
-	API.api(req.query.url)
+	API.getMusic(req.query.url)
 		.then((retObj) => {
-			res.render('search', {response: retObj});
+			res.render('result', {response: retObj});
 			console.log(retObj);
 			
 		}).catch((err) => {
 			console.error("Error", err);
-			res.render('search', {response: "api_error"});
+			res.render('result', {response: "api_error"});
 		});
+});
+app.get('/search', (req, res) => {
+	console.log(req.query.music);
+	API.searchMusic(req.query.music).then((result) => {
+		console.log(result);
+		res.render('search', {result: result})
+	});
+	
+})
+
+app.post('/ajax', urlencodedParser, (req, res) => {
+	console.log(req.body);
+	API.searchMusic(req.body.query).then((result) => {
+		res.end(JSON.stringify(result));
+		console.log('sent');
+	}).catch((err) => {
+		console.error("Error", err);
+		res.end("api_error");
+	})
 });
 
 server.listen(port, () => {

@@ -38,7 +38,14 @@ let setCredentials = () => {
 
 let retObj = {};
 
-module.exports.api = async (userInput) => {
+module.exports.searchMusic = async (query) => {
+    await setCredentials();
+    console.log("querying");
+    let result = (await s.search(query, ['album', 'playlist', 'track'])).body;
+    return result;
+};
+
+module.exports.getMusic = async (userInput) => {
     let mediaURI = parseInput(userInput);
     await setCredentials();
     if(mediaURI.type === "track") {
