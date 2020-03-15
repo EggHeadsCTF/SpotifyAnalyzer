@@ -140,14 +140,14 @@
                                         let tempo = Math.round(stats[i].tempo) + 'bpm';
                                         %>
                                         <tr>
-                                            <td style="color: rgb(30,215,96);"><%= i+1 %>.</td>
-                                            <td><a id="track" href="<%= trackInfo[i].external_urls.spotify %> "><b><%= trackInfo[i].name %></b></a></td>
-                                            <td><%= danceability %></td>
-                                            <td><%= energy %></td>
-                                            <td><%= loudness %></td>
-                                            <td><%= instrumentalness %></td>
-                                            <td><%= speechiness %></td>
-                                            <td><%= tempo %></td>
+                                            <td title="<%= i+1 %>" style="color: rgb(30,215,96);"><%= i+1 %>.</td>
+                                            <td title="<%= trackInfo[i].name %>"><a id="track" href="<%= trackInfo[i].external_urls.spotify %> "><b><%= trackInfo[i].name %></b></a></td>
+                                            <td title="<%= danceability %>"><%= danceability %></td>
+                                            <td title="<%= energy %>"><%= energy %></td>
+                                            <td title="<%= loudness %>"><%= loudness %></td>
+                                            <td title="<%= instrumentalness %>"><%= instrumentalness %></td>
+                                            <td title="<%= speechiness %>"><%= speechiness %></td>
+                                            <td title="<%= tempo %>"><%= tempo %></td>
                                         </tr>
                                     <% } %>
                                 </tbody>

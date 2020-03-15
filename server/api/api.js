@@ -45,7 +45,7 @@ module.exports.api = async (userInput) => {
         retObj.type = "track";
 
         retObj.trackInfo = (await s.getTrack(mediaURI.id)).body;
-        retObj.audioFeatures = (await s.getAudioFeaturesForTrack(mediaURI.id)).body.audio_features;
+        retObj.audioFeatures = (await s.getAudioFeaturesForTrack(mediaURI.id)).body;
         return retObj;
         /* structure:
             {
