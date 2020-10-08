@@ -9,22 +9,22 @@
     "bulma": "^0.8.0",
     "chart.js": "^2.9.3",
     "cors": "^2.8.5",
+    "ejs": "^3.0.1",
     "express": "^4.16.2",
     "https": "^1.0.0",
     "jsdom": "^16.1.0",
     "moment": "^2.24.0",
     "querystring": "^0.2.0",
-    "socket.io": "^2.3.0",
     "spotify-web-api-node": "^4.0.0"
   },
   "devDependencies": {
-    "eslint": "^6.8.0",
+    "dotenv": "^8.2.0",
     "expect": "^25.1.0",
     "nodemon": "^2.0.2"
   },
   "scripts": {
     "start": "node server/server.js",
-    "test": "node server/server.js"
+    "start:dev": "nodemon -r dotenv/config server/server.js"
   },
   "repository": {
     "type": "git",

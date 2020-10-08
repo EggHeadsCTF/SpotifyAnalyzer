@@ -1,6 +1,3 @@
-const request = require('request'); // "Request" library
-const btoa = require('btoa');
-
 class secrets {
     constructor() {
         this.clientID = process.env.ID;

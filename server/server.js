@@ -1,7 +1,6 @@
 const path = require('path');
 const http =  require('http');
 const express = require('express');
-const socketIO = require('socket.io');
 const bodyParser = require('body-parser');
 const API = require('./api/api');
 const urlencodedParser = bodyParser.urlencoded({extended: false});
@@ -10,22 +9,45 @@ const port = process.env.PORT || 3000;
 
 var app = express();
 var server = http.createServer(app);
-var io = socketIO(server);
 
+// EJS for templating
+app.set('view engine', 'ejs');
 app.use(express.static(publicPath));
 
-app.post('/ajax', urlencodedParser, (req, res) => {
-	API.api(req.body.uri, (data, err) => {
-		
-		let response = err ? err : data;
-		//console.log("server", response);
-		res.writeHead(200, { "Content-Type": "application/json" });
-		res.end(JSON.stringify(response));
-	});
+app.get('/', (req, res) => {
+	res.render('index');
 });
 
-io.on('connection', (socket) => {
-  	console.log('New user connected');
+app.get('/result', (req, res) => {
+	console.log(req.query.url);
+	API.getMusic(req.query.url)
+		.then((retObj) => {
+			res.render('result', {response: retObj});
+			console.log(retObj);
+			
+		}).catch((err) => {
+			console.error("Error", err);
+			res.render('result', {response: "api_error"});
+		});
+});
+app.get('/search', (req, res) => {
+	console.log(req.query.music);
+	API.searchMusic(req.query.music).then((result) => {
+		console.log(result);
+		res.render('search', {result: result})
+	});
+	
+})
+
+app.post('/ajax', urlencodedParser, (req, res) => {
+	console.log(req.body);
+	API.searchMusic(req.body.query).then((result) => {
+		res.end(JSON.stringify(result));
+		console.log('sent');
+	}).catch((err) => {
+		console.error("Error", err);
+		res.end("api_error");
+	})
 });
 
 server.listen(port, () => {

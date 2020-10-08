@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Spotify Analyzer</title>    
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+		<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+		<script src="/js/index.js" type="text/javascript"></script>
+		<link rel="stylesheet" href="/css/main.css" />
+	</head>
+	<body>
+	<div id="main1"><div id="main2">
+	<form action="/search" method="get">
+		<section class="section">
+			<div class="container" id="search-div">
+				<a href="/"><h1 class="title" style="font-size: 4em; color: rgb(30,215,96);">Spotify Analyzer</h1></a>
+				<p class="subtitle">Get statistics for different songs in Spotify</p>
+				<div class="field">
+					<div class="control">
+						<input onload="" name="music" class="input is-rounded is-medium is-info" title="Must be a valid album, track, or playlist" placeholder="Input Track, Album, or Playlist" id="search-input" required>
+					</div>
+				</div>
+			</div>
+		</section>
+		<div class="container">
+			<button id="analyze" type="submit" class="button is-medium is-rounded" style="background-color:rgb(30,215,96); border: none;">Analyze!</button>
+		</div>
+	</form>
+	</body>
+</html>
